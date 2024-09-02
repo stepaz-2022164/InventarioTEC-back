@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Soporte_IT\\Desktop\\Pro\\InventarioTEC-back\\GestorInventario.csproj": {}
+    "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Soporte_IT\\Desktop\\Pro\\InventarioTEC-back\\GestorInventario.csproj": {
+    "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Soporte_IT\\Desktop\\Pro\\InventarioTEC-back\\GestorInventario.csproj",
+        "projectUniqueName": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj",
         "projectName": "GestorInventario",
-        "projectPath": "C:\\Users\\Soporte_IT\\Desktop\\Pro\\InventarioTEC-back\\GestorInventario.csproj",
+        "projectPath": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj",
         "packagesPath": "C:\\Users\\Soporte_IT\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Soporte_IT\\Desktop\\Pro\\InventarioTEC-back\\obj\\",
+        "outputPath": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\Soporte_IT\\AppData\\Roaming\\NuGet\\NuGet.Config",
