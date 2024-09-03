@@ -1,21 +1,20 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
-public class Marca
+public class PuestoEmpleado
 {
     [Key]
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
-    [Column("idMarca", TypeName = "int")]
-    public int idMarca { get; set; }
+    [Column("idPuestoEmpleado", TypeName = "int")]
+    public int idPuestoEmpleado {get; set;}
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [MaxLength(100, ErrorMessage = "El parámetro {0} solo puede tener {1} carácteres")]
-    [Column("nombreMarca", TypeName = "varchar(100)")]
-    public string nombreMarca { get; set; } = null!;
+    [Column("nombrePuestoEmpleado", TypeName = "varchar(100)")]
+    public string nombrePuestoEmpleado { get; set; } = null!;
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
-    [DataType(DataType.MultilineText)]
     [MaxLength(100, ErrorMessage = "El parámetro {0} solo puede tener {1} carácteres")]
-    [Column("descripcionMarca", TypeName = "varchar(100)")]
-    public string descripcionMarca { get; set; } = null!;
+    [Column("descripcionPuestoEmpleado", TypeName = "varchar(200)")]
+    public string descripcionPuestoEmpleado { get; set; } = null!;
 }
