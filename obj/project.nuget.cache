@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "dgSpecHash": "NV3OlUCH1tw=",
+  "dgSpecHash": "5vT8L+1celw=",
   "success": true,
-  "projectFilePath": "C:\\Users\\Soporte_IT\\Desktop\\Pro\\InventarioTEC-back\\GestorInventario.csproj",
+  "projectFilePath": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\Soporte_IT\\.nuget\\packages\\microsoft.aspnetcore.openapi\\8.0.8\\microsoft.aspnetcore.openapi.8.0.8.nupkg.sha512",
     "C:\\Users\\Soporte_IT\\.nuget\\packages\\microsoft.extensions.apidescription.server\\6.0.5\\microsoft.extensions.apidescription.server.6.0.5.nupkg.sha512",
