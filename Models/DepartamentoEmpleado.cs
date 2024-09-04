@@ -16,6 +16,6 @@ public class DepartamentoEmpleado
     [Required(ErrorMessage = "El parametro {0} es obligatorio")]
     [DataType(DataType.MultilineText)]
     [MaxLength(100 , ErrorMessage = "El parametro {0} solo puede tener {1} caracteres")]
-    [Column("descripcionAreaEmpleado", TypeName = "vachar(200)")]
+    [Column("descripcionAreaEmpleado", TypeName = "varchar(200)")]
     public string descripcionAreaEmpleado { get; set; } = null!;
 }

@@ -30,7 +30,7 @@ public class Empleado
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
     [EmailAddress(ErrorMessage = "El campo {0} no es un email valido")]
     [DataType(DataType.EmailAddress)]
-    [Column("telefonoEmpleado",TypeName = "varchar(50)")]
+    [Column("correoEmpleado",TypeName = "varchar(50)")]
     public string correoEmpleado{ get; set; } = null!;
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
@@ -57,6 +57,6 @@ public class Empleado
     [ForeignKey("idRegion")]
     public Region Region {get; set;} = null!;
 
-    [ForeignKey("idHub")]
+    [ForeignKey("idHUB")]
     public HUB HUB {get; set;} = null!;
 }   
