@@ -13,7 +13,7 @@ public class Region{
     public string nombreRegion { get; set; } = null!;
 
     [Required(ErrorMessage = "El parametro {0} es obligatorio")]
-    [Column("idRegion", TypeName = "int")]
+    [Column("idPais", TypeName = "int")]
     public int idPais { get; set; }
 
     [ForeignKey("idPais")]

@@ -29,4 +29,11 @@ public class Equipo
 
     [ForeignKey("idTipoDeEquipo")]
     public TipoDeEquipo TipoDeEquipo {get; set; } = null!;
+
+    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
+    [Column("idOficina", TypeName = "int")]
+    public int idOficina { get; set; }
+
+    [ForeignKey("idOficina")]
+    public Oficina Oficina {get; set; } = null!;
 }
