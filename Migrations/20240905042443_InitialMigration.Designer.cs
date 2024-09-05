@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20240904235114_InitialMigration")]
+    [Migration("20240905042443_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -141,12 +141,9 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idAreaEmpleado");
 
-                    b.Property<int>("idDepartamento")
-                        .HasColumnType("int")
-                        .HasColumnName("idDepartamento");
-
                     b.Property<int>("idDepartamentoEmpleado")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("idDepartamentoEmpleado");
 
                     b.Property<int>("idHUB")
                         .HasColumnType("int")
@@ -157,7 +154,8 @@ namespace GestorInventario.Migrations
                         .HasColumnName("idPuestoEmpleado");
 
                     b.Property<int>("idRegion")
-                        .HasColumnType("int");
+                        .HasColumnType("int")
+                        .HasColumnName("idRegion");
 
                     b.Property<string>("nombreEmpleado")
                         .IsRequired()
@@ -209,6 +207,10 @@ namespace GestorInventario.Migrations
                         .HasColumnType("date")
                         .HasColumnName("fechaDeIngreso");
 
+                    b.Property<int>("idOficina")
+                        .HasColumnType("int")
+                        .HasColumnName("idOficina");
+
                     b.Property<int>("idTipoDeEquipo")
                         .HasColumnType("int")
                         .HasColumnName("idTipoDeEquipo");
@@ -220,6 +222,8 @@ namespace GestorInventario.Migrations
                         .HasColumnName("numeroDeSerie");
 
                     b.HasKey("idEquipo");
+
+                    b.HasIndex("idOficina");
 
                     b.HasIndex("idTipoDeEquipo");
 
@@ -234,12 +238,6 @@ namespace GestorInventario.Migrations
                         .HasColumnName("idHUB");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idHUB"));
-
-                    b.Property<int>("PaisidPais")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RegionidRegion")
-                        .HasColumnType("int");
 
                     b.Property<int>("idPais")
                         .HasColumnType("int")
@@ -257,9 +255,9 @@ namespace GestorInventario.Migrations
 
                     b.HasKey("idHUB");
 
-                    b.HasIndex("PaisidPais");
+                    b.HasIndex("idPais");
 
-                    b.HasIndex("RegionidRegion");
+                    b.HasIndex("idRegion");
 
                     b.ToTable("HUB");
                 });
@@ -599,19 +597,19 @@ namespace GestorInventario.Migrations
                     b.HasOne("AreaEmpleado", "AreaEmpleado")
                         .WithMany()
                         .HasForeignKey("idAreaEmpleado")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("DepartamentoEmpleado", "DepartamentoEmpleado")
                         .WithMany()
                         .HasForeignKey("idDepartamentoEmpleado")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("HUB", "HUB")
                         .WithMany()
                         .HasForeignKey("idHUB")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("PuestoEmpleado", "PuestoEmpleado")
@@ -623,7 +621,7 @@ namespace GestorInventario.Migrations
                     b.HasOne("Region", "Region")
                         .WithMany()
                         .HasForeignKey("idRegion")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("AreaEmpleado");
@@ -639,11 +637,19 @@ namespace GestorInventario.Migrations
 
             modelBuilder.Entity("Equipo", b =>
                 {
+                    b.HasOne("Oficina", "Oficina")
+                        .WithMany()
+                        .HasForeignKey("idOficina")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.HasOne("TipoDeEquipo", "TipoDeEquipo")
                         .WithMany()
                         .HasForeignKey("idTipoDeEquipo")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
+
+                    b.Navigation("Oficina");
 
                     b.Navigation("TipoDeEquipo");
                 });
@@ -652,14 +658,14 @@ namespace GestorInventario.Migrations
                 {
                     b.HasOne("Pais", "Pais")
                         .WithMany()
-                        .HasForeignKey("PaisidPais")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("idPais")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Region", "Region")
                         .WithMany()
-                        .HasForeignKey("RegionidRegion")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .HasForeignKey("idRegion")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Pais");
@@ -683,7 +689,7 @@ namespace GestorInventario.Migrations
                     b.HasOne("Empleado", "Empleado")
                         .WithMany()
                         .HasForeignKey("idEmpleado")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Equipo", "Equipo")
@@ -724,19 +730,19 @@ namespace GestorInventario.Migrations
                     b.HasOne("HUB", "HUB")
                         .WithMany()
                         .HasForeignKey("idHUB")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Pais", "Pais")
                         .WithMany()
                         .HasForeignKey("idPais")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("Region", "Region")
                         .WithMany()
                         .HasForeignKey("idRegion")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("HUB");

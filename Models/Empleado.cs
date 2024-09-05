@@ -34,12 +34,16 @@ public class Empleado
     public string correoEmpleado{ get; set; } = null!;
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
-    [Column("idDepartamento", TypeName = "int")]
-    public int idDepartamento{ get; set; }
+    [Column("idDepartamentoEmpleado", TypeName = "int")]
+    public int idDepartamentoEmpleado{ get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
     [Column("idAreaEmpleado", TypeName = "int")]
     public int idAreaEmpleado{ get; set; }
+
+    [Required(ErrorMessage = "El campo {0} es obligatorio")]
+    [Column("idRegion", TypeName = "int")]
+    public int idRegion{ get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
     [Column("idHUB", TypeName = "int")]
