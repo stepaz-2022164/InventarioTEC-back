@@ -80,46 +80,6 @@ namespace GestorInventario.Migrations
                     b.ToTable("DepartamentosEmpleados");
                 });
 
-            modelBuilder.Entity("Edificio", b =>
-                {
-                    b.Property<int>("idEdificio")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("idEdificio");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idEdificio"));
-
-                    b.Property<int>("cantidadNiveles")
-                        .HasColumnType("int")
-                        .HasColumnName("cantidadNiveles");
-
-                    b.Property<int>("cantidadOficinas")
-                        .HasColumnType("int")
-                        .HasColumnName("cantidadOficinas");
-
-                    b.Property<string>("descripcionEdificio")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("descripcionEdificio");
-
-                    b.Property<int>("idSede")
-                        .HasColumnType("int")
-                        .HasColumnName("idSede");
-
-                    b.Property<string>("nombreEdificio")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nombreEdificio");
-
-                    b.HasKey("idEdificio");
-
-                    b.HasIndex("idSede");
-
-                    b.ToTable("Edificios");
-                });
-
             modelBuilder.Entity("Empleado", b =>
                 {
                     b.Property<int>("idEmpleado")
@@ -204,9 +164,9 @@ namespace GestorInventario.Migrations
                         .HasColumnType("date")
                         .HasColumnName("fechaDeIngreso");
 
-                    b.Property<int>("idOficina")
+                    b.Property<int>("idHUB")
                         .HasColumnType("int")
-                        .HasColumnName("idOficina");
+                        .HasColumnName("idHUB");
 
                     b.Property<int>("idTipoDeEquipo")
                         .HasColumnType("int")
@@ -220,7 +180,7 @@ namespace GestorInventario.Migrations
 
                     b.HasKey("idEquipo");
 
-                    b.HasIndex("idOficina");
+                    b.HasIndex("idHUB");
 
                     b.HasIndex("idTipoDeEquipo");
 
@@ -283,44 +243,6 @@ namespace GestorInventario.Migrations
                     b.HasKey("idMarca");
 
                     b.ToTable("Marcas");
-                });
-
-            modelBuilder.Entity("Oficina", b =>
-                {
-                    b.Property<int>("idOficina")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("idOficina");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idOficina"));
-
-                    b.Property<string>("descripcionOficina")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("descripcionOficina");
-
-                    b.Property<int>("idEdificio")
-                        .HasColumnType("int")
-                        .HasColumnName("idEdificio");
-
-                    b.Property<string>("niveloficina")
-                        .IsRequired()
-                        .HasMaxLength(10)
-                        .HasColumnType("varchar(10)")
-                        .HasColumnName("niveloficina");
-
-                    b.Property<string>("nombreOficina")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nombreOficina");
-
-                    b.HasKey("idOficina");
-
-                    b.HasIndex("idEdificio");
-
-                    b.ToTable("Oficinas");
                 });
 
             modelBuilder.Entity("Pais", b =>
@@ -455,50 +377,6 @@ namespace GestorInventario.Migrations
                     b.ToTable("ReporteEquipos");
                 });
 
-            modelBuilder.Entity("Sede", b =>
-                {
-                    b.Property<int>("idSede")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("idSede");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idSede"));
-
-                    b.Property<string>("direccionSede")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("direccionSede");
-
-                    b.Property<int>("idHUB")
-                        .HasColumnType("int")
-                        .HasColumnName("idHUB");
-
-                    b.Property<int>("idPais")
-                        .HasColumnType("int")
-                        .HasColumnName("idPais");
-
-                    b.Property<int>("idRegion")
-                        .HasColumnType("int")
-                        .HasColumnName("idRegion");
-
-                    b.Property<string>("nombreSede")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("varchar(100)")
-                        .HasColumnName("nombreSede");
-
-                    b.HasKey("idSede");
-
-                    b.HasIndex("idHUB");
-
-                    b.HasIndex("idPais");
-
-                    b.HasIndex("idRegion");
-
-                    b.ToTable("Sedes");
-                });
-
             modelBuilder.Entity("TipoDeEquipo", b =>
                 {
                     b.Property<int>("idTipoDeEquipo")
@@ -578,17 +456,6 @@ namespace GestorInventario.Migrations
                     b.Navigation("DepartamentoEmpleado");
                 });
 
-            modelBuilder.Entity("Edificio", b =>
-                {
-                    b.HasOne("Sede", "Sede")
-                        .WithMany()
-                        .HasForeignKey("idSede")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Sede");
-                });
-
             modelBuilder.Entity("Empleado", b =>
                 {
                     b.HasOne("AreaEmpleado", "AreaEmpleado")
@@ -634,9 +501,9 @@ namespace GestorInventario.Migrations
 
             modelBuilder.Entity("Equipo", b =>
                 {
-                    b.HasOne("Oficina", "Oficina")
+                    b.HasOne("HUB", "HUB")
                         .WithMany()
-                        .HasForeignKey("idOficina")
+                        .HasForeignKey("idHUB")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -646,7 +513,7 @@ namespace GestorInventario.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.Navigation("Oficina");
+                    b.Navigation("HUB");
 
                     b.Navigation("TipoDeEquipo");
                 });
@@ -668,17 +535,6 @@ namespace GestorInventario.Migrations
                     b.Navigation("Pais");
 
                     b.Navigation("Region");
-                });
-
-            modelBuilder.Entity("Oficina", b =>
-                {
-                    b.HasOne("Edificio", "Edificio")
-                        .WithMany()
-                        .HasForeignKey("idEdificio")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Edificio");
                 });
 
             modelBuilder.Entity("PropietarioEquipo", b =>
@@ -720,33 +576,6 @@ namespace GestorInventario.Migrations
                         .IsRequired();
 
                     b.Navigation("Equipo");
-                });
-
-            modelBuilder.Entity("Sede", b =>
-                {
-                    b.HasOne("HUB", "HUB")
-                        .WithMany()
-                        .HasForeignKey("idHUB")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Pais", "Pais")
-                        .WithMany()
-                        .HasForeignKey("idPais")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.HasOne("Region", "Region")
-                        .WithMany()
-                        .HasForeignKey("idRegion")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
-                    b.Navigation("HUB");
-
-                    b.Navigation("Pais");
-
-                    b.Navigation("Region");
                 });
 
             modelBuilder.Entity("TipoDeEquipo", b =>

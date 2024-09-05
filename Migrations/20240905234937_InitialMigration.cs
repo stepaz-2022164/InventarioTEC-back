@@ -208,37 +208,31 @@ namespace GestorInventario.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "Sedes",
+                name: "Equipos",
                 columns: table => new
                 {
-                    idSede = table.Column<int>(type: "int", nullable: false)
+                    idEquipo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    nombreSede = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    direccionSede = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    idPais = table.Column<int>(type: "int", nullable: false),
-                    idRegion = table.Column<int>(type: "int", nullable: false),
+                    numeroDeSerie = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    estado = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    fechaDeIngreso = table.Column<DateOnly>(type: "date", nullable: false),
+                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false),
                     idHUB = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Sedes", x => x.idSede);
+                    table.PrimaryKey("PK_Equipos", x => x.idEquipo);
                     table.ForeignKey(
-                        name: "FK_Sedes_HUB_idHUB",
+                        name: "FK_Equipos_HUB_idHUB",
                         column: x => x.idHUB,
                         principalTable: "HUB",
                         principalColumn: "idHUB",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Sedes_Paises_idPais",
-                        column: x => x.idPais,
-                        principalTable: "Paises",
-                        principalColumn: "idPais",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Sedes_Regiones_idRegion",
-                        column: x => x.idRegion,
-                        principalTable: "Regiones",
-                        principalColumn: "idRegion",
+                        name: "FK_Equipos_TiposDeEquipos_idTipoDeEquipo",
+                        column: x => x.idTipoDeEquipo,
+                        principalTable: "TiposDeEquipos",
+                        principalColumn: "idTipoDeEquipo",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -261,80 +255,6 @@ namespace GestorInventario.Migrations
                         principalTable: "Empleados",
                         principalColumn: "idEmpleado",
                         onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Edificios",
-                columns: table => new
-                {
-                    idEdificio = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    cantidadOficinas = table.Column<int>(type: "int", nullable: false),
-                    cantidadNiveles = table.Column<int>(type: "int", nullable: false),
-                    nombreEdificio = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    descripcionEdificio = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    idSede = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Edificios", x => x.idEdificio);
-                    table.ForeignKey(
-                        name: "FK_Edificios_Sedes_idSede",
-                        column: x => x.idSede,
-                        principalTable: "Sedes",
-                        principalColumn: "idSede",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Oficinas",
-                columns: table => new
-                {
-                    idOficina = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    nombreOficina = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    descripcionOficina = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    niveloficina = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
-                    idEdificio = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Oficinas", x => x.idOficina);
-                    table.ForeignKey(
-                        name: "FK_Oficinas_Edificios_idEdificio",
-                        column: x => x.idEdificio,
-                        principalTable: "Edificios",
-                        principalColumn: "idEdificio",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Equipos",
-                columns: table => new
-                {
-                    idEquipo = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    numeroDeSerie = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    estado = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
-                    fechaDeIngreso = table.Column<DateOnly>(type: "date", nullable: false),
-                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false),
-                    idOficina = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Equipos", x => x.idEquipo);
-                    table.ForeignKey(
-                        name: "FK_Equipos_Oficinas_idOficina",
-                        column: x => x.idOficina,
-                        principalTable: "Oficinas",
-                        principalColumn: "idOficina",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Equipos_TiposDeEquipos_idTipoDeEquipo",
-                        column: x => x.idTipoDeEquipo,
-                        principalTable: "TiposDeEquipos",
-                        principalColumn: "idTipoDeEquipo",
-                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateTable(
@@ -391,11 +311,6 @@ namespace GestorInventario.Migrations
                 column: "idDepartamentoEmpleado");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Edificios_idSede",
-                table: "Edificios",
-                column: "idSede");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Empleados_idAreaEmpleado",
                 table: "Empleados",
                 column: "idAreaEmpleado");
@@ -421,9 +336,9 @@ namespace GestorInventario.Migrations
                 column: "idRegion");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipos_idOficina",
+                name: "IX_Equipos_idHUB",
                 table: "Equipos",
-                column: "idOficina");
+                column: "idHUB");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Equipos_idTipoDeEquipo",
@@ -439,11 +354,6 @@ namespace GestorInventario.Migrations
                 name: "IX_HUB_idRegion",
                 table: "HUB",
                 column: "idRegion");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Oficinas_idEdificio",
-                table: "Oficinas",
-                column: "idEdificio");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PropietarioEquipos_idEmpleado",
@@ -464,21 +374,6 @@ namespace GestorInventario.Migrations
                 name: "IX_ReporteEquipos_idEquipo",
                 table: "ReporteEquipos",
                 column: "idEquipo");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sedes_idHUB",
-                table: "Sedes",
-                column: "idHUB");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sedes_idPais",
-                table: "Sedes",
-                column: "idPais");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Sedes_idRegion",
-                table: "Sedes",
-                column: "idRegion");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TiposDeEquipos_idMarca",
@@ -510,31 +405,22 @@ namespace GestorInventario.Migrations
                 name: "Empleados");
 
             migrationBuilder.DropTable(
-                name: "Oficinas");
-
-            migrationBuilder.DropTable(
                 name: "TiposDeEquipos");
 
             migrationBuilder.DropTable(
                 name: "AreasEmpleados");
 
             migrationBuilder.DropTable(
-                name: "PuestosEmpleados");
+                name: "HUB");
 
             migrationBuilder.DropTable(
-                name: "Edificios");
+                name: "PuestosEmpleados");
 
             migrationBuilder.DropTable(
                 name: "Marcas");
 
             migrationBuilder.DropTable(
                 name: "DepartamentosEmpleados");
-
-            migrationBuilder.DropTable(
-                name: "Sedes");
-
-            migrationBuilder.DropTable(
-                name: "HUB");
 
             migrationBuilder.DropTable(
                 name: "Regiones");
