@@ -73,6 +73,5 @@ namespace GestorInventario.Models.Contexts
             //Reporte Equipo
             modelBuilder.Entity<ReporteEquipo>();
         }
-
     }
 }
