@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{052EA49B-673C-4107-AACC-ABA85BF14557}|GestorInventario.csproj|c:\\users\\soporte_it\\desktop\\inventario - tec\\inventariotec-back\\controllers\\departamentoempleadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{052EA49B-673C-4107-AACC-ABA85BF14557}|GestorInventario.csproj|solutionrelative:controllers\\departamentoempleadocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "DepartamentoEmpleadoController.cs",
+              "DocumentMoniker": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\Controllers\\DepartamentoEmpleadoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DepartamentoEmpleadoController.cs",
+              "ToolTip": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\Controllers\\DepartamentoEmpleadoController.cs",
+              "RelativeToolTip": "Controllers\\DepartamentoEmpleadoController.cs",
+              "ViewState": "AgIAABMAAAAAAAAAAAAgwAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-09-06T15:31:48.961Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
