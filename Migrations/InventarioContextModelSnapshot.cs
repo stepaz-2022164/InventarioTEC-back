@@ -422,10 +422,6 @@ namespace GestorInventario.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idUsuario"));
 
-                    b.Property<int>("idEmpleado")
-                        .HasColumnType("int")
-                        .HasColumnName("idEmpleado");
-
                     b.Property<string>("pass")
                         .IsRequired()
                         .HasMaxLength(10)
@@ -439,8 +435,6 @@ namespace GestorInventario.Migrations
                         .HasColumnName("usuario");
 
                     b.HasKey("idUsuario");
-
-                    b.HasIndex("idEmpleado");
 
                     b.ToTable("Usuarios");
                 });
@@ -587,17 +581,6 @@ namespace GestorInventario.Migrations
                         .IsRequired();
 
                     b.Navigation("Marca");
-                });
-
-            modelBuilder.Entity("Usuario", b =>
-                {
-                    b.HasOne("Empleado", "Empleado")
-                        .WithMany()
-                        .HasForeignKey("idEmpleado")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Empleado");
                 });
 #pragma warning restore 612, 618
         }
