@@ -1,8 +1,8 @@
-using GestorInventario.Models.Contexts;
+using GestorInventario.src.Models.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GestorInventario.Controllers
+namespace GestorInventario.src.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]

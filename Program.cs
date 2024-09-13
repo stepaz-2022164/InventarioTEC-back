@@ -1,5 +1,5 @@
 using Microsoft.EntityFrameworkCore;
-using GestorInventario.Models.Contexts;
+using GestorInventario.src.Models.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
@@ -67,6 +67,7 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

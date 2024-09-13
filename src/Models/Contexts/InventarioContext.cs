@@ -1,6 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 
-namespace GestorInventario.Models.Contexts
+namespace GestorInventario.src.Models.Contexts
 {
     public class InventarioContext : DbContext
     {

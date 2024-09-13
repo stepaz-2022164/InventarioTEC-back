@@ -1,4 +1,4 @@
-using GestorInventario.Models.Contexts;
+using GestorInventario.src.Models.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 

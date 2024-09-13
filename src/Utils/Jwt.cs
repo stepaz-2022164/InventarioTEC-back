@@ -1,0 +1,4 @@
+namespace GestorInventario.src.Utils
+{
+    
+}

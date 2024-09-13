@@ -274,3 +274,4 @@ C:\Escritorio\Inventario_TEC\InventarioTEC-back\obj\Debug\net8.0\refint\GestorIn
 C:\Escritorio\Inventario_TEC\InventarioTEC-back\obj\Debug\net8.0\GestorInventario.pdb
 C:\Escritorio\Inventario_TEC\InventarioTEC-back\obj\Debug\net8.0\GestorInventario.genruntimeconfig.cache
 C:\Escritorio\Inventario_TEC\InventarioTEC-back\obj\Debug\net8.0\ref\GestorInventario.dll
+C:\Users\Soporte_IT\Desktop\Inventario - TEC\InventarioTEC-back\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
