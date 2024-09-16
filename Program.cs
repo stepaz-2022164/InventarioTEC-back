@@ -1,10 +1,32 @@
 using Microsoft.EntityFrameworkCore;
-using GestorInventario.Models.Contexts;
+using GestorInventario.src.Models.Contexts;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+using GestorInventario.src.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllers();
+    //Configuración del JWT
+builder.Services.AddAuthentication(options =>{
+    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(options => {
+    options.TokenValidationParameters = new TokenValidationParameters {
+        ValidateIssuer = true,
+        ValidateAudience = true,
+        ValidateLifetime = true,
+        ValidateIssuerSigningKey = true,
+        ValidIssuer = builder.Configuration["JWT:Issuer"],
+        ValidAudience = builder.Configuration["JWT:Audience"],
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
+    };
+});
+builder.Services.AddAuthorization();
+
+    //Configuración del contexto de base de datos
 builder.Services.AddDbContext<InventarioContext>(o =>
 {
     o.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
@@ -46,6 +68,7 @@ app.MapGet("/weatherforecast", () =>
 .WithOpenApi();
 
 app.UseAuthorization();
+app.UseAuthentication();
 
 app.MapControllers();
 

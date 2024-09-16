@@ -18,10 +18,4 @@ public class Usuario
     [Column("pass", TypeName = "varchar(10)")]
     public string pass { get; set; } = null!;
 
-    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
-    [Column("idEmpleado", TypeName = "int")]
-    public int idEmpleado { get; set; }
-
-    [ForeignKey("idEmpleado")]
-    public Empleado Empleado { get; set; } = null!;
 }
