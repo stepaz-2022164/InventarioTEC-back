@@ -3,6 +3,7 @@ using GestorInventario.src.Models.Contexts;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using GestorInventario.src.Middlewares;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,7 +24,7 @@ builder.Services.AddAuthentication(options =>{
         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["JWT:Key"]))
     };
 });
-builder.Services.AddAuthentication();
+builder.Services.AddAuthorization();
 
     //Configuración del contexto de base de datos
 builder.Services.AddDbContext<InventarioContext>(o =>

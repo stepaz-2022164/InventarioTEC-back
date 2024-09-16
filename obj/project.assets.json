@@ -4237,19 +4237,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\Eduardo\\.nuget\\packages\\": {}
+    "C:\\Users\\Soporte_IT\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Escritorio\\Inventario_TEC\\InventarioTEC-back\\GestorInventario.csproj",
+      "projectUniqueName": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj",
       "projectName": "GestorInventario",
-      "projectPath": "C:\\Escritorio\\Inventario_TEC\\InventarioTEC-back\\GestorInventario.csproj",
-      "packagesPath": "C:\\Users\\Eduardo\\.nuget\\packages\\",
-      "outputPath": "C:\\Escritorio\\Inventario_TEC\\InventarioTEC-back\\obj\\",
+      "projectPath": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\GestorInventario.csproj",
+      "packagesPath": "C:\\Users\\Soporte_IT\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Soporte_IT\\Desktop\\Inventario - TEC\\InventarioTEC-back\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\Eduardo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Soporte_IT\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -4327,7 +4327,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.400/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

@@ -1,4 +1,6 @@
+using GestorInventario.src.Middlewares;
 using GestorInventario.src.Models.Contexts;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
@@ -15,10 +17,12 @@ namespace GestorInventario.src.Controllers
             _context = context;
         }
 
+        [ValidateJWT]
         [HttpGet]
         [Route("getDepartamentosEmpleados")]
         public async Task<ActionResult<IEnumerable<DepartamentoEmpleado>>> GetDepartamentosEmpleados()
         {
+            var usuario = HttpContext.Items["Usuario"] as Usuario;
             try
             {
                 var departamentosEmpleados = await _context.DepartamentosEmpleados.ToListAsync();
