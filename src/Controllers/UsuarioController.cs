@@ -13,21 +13,17 @@ namespace GestorInventario.Controllers
     {
 
         private readonly IConfiguration _configuracion;
-
-        public UsuarioController(IConfiguration configuracion)
-        {
-            _configuracion = configuracion;
-        }
         private readonly InventarioContext _context;
 
-        public UsuarioController(InventarioContext context)
+        public UsuarioController(IConfiguration configuracion, InventarioContext context)
         {
+            _configuracion = configuracion;
             _context = context;
         }
-
+        
         [HttpPost]
         [Route("login")]
-        public async Task<ActionResult<Usuario>> Login([FromBody] Usuario u) {
+        public async Task<ActionResult<Usuario>> Login([FromBody] Usuario u, CancellationToken cancellationToken) {
             try
             {
                 if (!ModelState.IsValid!)
@@ -35,7 +31,7 @@ namespace GestorInventario.Controllers
                     return BadRequest(ModelState);
                 }
 
-                var user = await _context.Usuarios.FindAsync(u.usuario, u.pass);
+                var user = await _context.Usuarios.FindAsync(new object[] { u.usuario, u.pass }, cancellationToken);
                 if (user != null)
                 {
                     var usuarioLogeado = (
