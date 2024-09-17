@@ -29,11 +29,4 @@ public class Equipo
 
     [ForeignKey("idTipoDeEquipo")]
     public TipoDeEquipo TipoDeEquipo {get; set; } = null!;
-
-    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
-    [Column("idHUB", TypeName = "int")]
-    public int idHUB { get; set; }
-
-    [ForeignKey("idHUB")]
-    public HUB HUB {get; set; } = null!;
 }

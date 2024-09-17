@@ -144,6 +144,28 @@ namespace GestorInventario.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Equipos",
+                columns: table => new
+                {
+                    idEquipo = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    numeroDeSerie = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
+                    estado = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    fechaDeIngreso = table.Column<DateOnly>(type: "date", nullable: false),
+                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Equipos", x => x.idEquipo);
+                    table.ForeignKey(
+                        name: "FK_Equipos_TiposDeEquipos_idTipoDeEquipo",
+                        column: x => x.idTipoDeEquipo,
+                        principalTable: "TiposDeEquipos",
+                        principalColumn: "idTipoDeEquipo",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "HUB",
                 columns: table => new
                 {
@@ -171,6 +193,62 @@ namespace GestorInventario.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "ReporteEquipos",
+                columns: table => new
+                {
+                    idReporteEquipo = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    fechaReporte = table.Column<DateOnly>(type: "date", nullable: false),
+                    descripcionReporteEquipo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    idEquipo = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_ReporteEquipos", x => x.idReporteEquipo);
+                    table.ForeignKey(
+                        name: "FK_ReporteEquipos_Equipos_idEquipo",
+                        column: x => x.idEquipo,
+                        principalTable: "Equipos",
+                        principalColumn: "idEquipo",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Sedes",
+                columns: table => new
+                {
+                    idSede = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombreSede = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    direccionSede = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    idPais = table.Column<int>(type: "int", nullable: false),
+                    idRegion = table.Column<int>(type: "int", nullable: false),
+                    idHUB = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Sedes", x => x.idSede);
+                    table.ForeignKey(
+                        name: "FK_Sedes_HUB_idHUB",
+                        column: x => x.idHUB,
+                        principalTable: "HUB",
+                        principalColumn: "idHUB",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Sedes_Paises_idPais",
+                        column: x => x.idPais,
+                        principalTable: "Paises",
+                        principalColumn: "idPais",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Sedes_Regiones_idRegion",
+                        column: x => x.idRegion,
+                        principalTable: "Regiones",
+                        principalColumn: "idRegion",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Empleados",
                 columns: table => new
                 {
@@ -184,7 +262,7 @@ namespace GestorInventario.Migrations
                     idDepartamentoEmpleado = table.Column<int>(type: "int", nullable: false),
                     idAreaEmpleado = table.Column<int>(type: "int", nullable: false),
                     idRegion = table.Column<int>(type: "int", nullable: false),
-                    idHUB = table.Column<int>(type: "int", nullable: false)
+                    idSede = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -202,12 +280,6 @@ namespace GestorInventario.Migrations
                         principalColumn: "idDepartamentoEmpleado",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
-                        name: "FK_Empleados_HUB_idHUB",
-                        column: x => x.idHUB,
-                        principalTable: "HUB",
-                        principalColumn: "idHUB",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
                         name: "FK_Empleados_PuestosEmpleados_idPuestoEmpleado",
                         column: x => x.idPuestoEmpleado,
                         principalTable: "PuestosEmpleados",
@@ -219,34 +291,11 @@ namespace GestorInventario.Migrations
                         principalTable: "Regiones",
                         principalColumn: "idRegion",
                         onDelete: ReferentialAction.Restrict);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Equipos",
-                columns: table => new
-                {
-                    idEquipo = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    numeroDeSerie = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    estado = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
-                    fechaDeIngreso = table.Column<DateOnly>(type: "date", nullable: false),
-                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false),
-                    idHUB = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Equipos", x => x.idEquipo);
                     table.ForeignKey(
-                        name: "FK_Equipos_HUB_idHUB",
-                        column: x => x.idHUB,
-                        principalTable: "HUB",
-                        principalColumn: "idHUB",
-                        onDelete: ReferentialAction.Restrict);
-                    table.ForeignKey(
-                        name: "FK_Equipos_TiposDeEquipos_idTipoDeEquipo",
-                        column: x => x.idTipoDeEquipo,
-                        principalTable: "TiposDeEquipos",
-                        principalColumn: "idTipoDeEquipo",
+                        name: "FK_Empleados_Sedes_idSede",
+                        column: x => x.idSede,
+                        principalTable: "Sedes",
+                        principalColumn: "idSede",
                         onDelete: ReferentialAction.Restrict);
                 });
 
@@ -277,27 +326,6 @@ namespace GestorInventario.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateTable(
-                name: "ReporteEquipos",
-                columns: table => new
-                {
-                    idReporteEquipo = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    fechaReporte = table.Column<DateOnly>(type: "date", nullable: false),
-                    descripcionReporteEquipo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    idEquipo = table.Column<int>(type: "int", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ReporteEquipos", x => x.idReporteEquipo);
-                    table.ForeignKey(
-                        name: "FK_ReporteEquipos_Equipos_idEquipo",
-                        column: x => x.idEquipo,
-                        principalTable: "Equipos",
-                        principalColumn: "idEquipo",
-                        onDelete: ReferentialAction.Cascade);
-                });
-
             migrationBuilder.CreateIndex(
                 name: "IX_AreasEmpleados_idDepartamentoEmpleado",
                 table: "AreasEmpleados",
@@ -314,11 +342,6 @@ namespace GestorInventario.Migrations
                 column: "idDepartamentoEmpleado");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Empleados_idHUB",
-                table: "Empleados",
-                column: "idHUB");
-
-            migrationBuilder.CreateIndex(
                 name: "IX_Empleados_idPuestoEmpleado",
                 table: "Empleados",
                 column: "idPuestoEmpleado");
@@ -329,9 +352,9 @@ namespace GestorInventario.Migrations
                 column: "idRegion");
 
             migrationBuilder.CreateIndex(
-                name: "IX_Equipos_idHUB",
-                table: "Equipos",
-                column: "idHUB");
+                name: "IX_Empleados_idSede",
+                table: "Empleados",
+                column: "idSede");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Equipos_idTipoDeEquipo",
@@ -369,6 +392,21 @@ namespace GestorInventario.Migrations
                 column: "idEquipo");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Sedes_idHUB",
+                table: "Sedes",
+                column: "idHUB");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sedes_idPais",
+                table: "Sedes",
+                column: "idPais");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Sedes_idRegion",
+                table: "Sedes",
+                column: "idRegion");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_TiposDeEquipos_idMarca",
                 table: "TiposDeEquipos",
                 column: "idMarca");
@@ -399,7 +437,7 @@ namespace GestorInventario.Migrations
                 name: "PuestosEmpleados");
 
             migrationBuilder.DropTable(
-                name: "HUB");
+                name: "Sedes");
 
             migrationBuilder.DropTable(
                 name: "TiposDeEquipos");
@@ -408,10 +446,13 @@ namespace GestorInventario.Migrations
                 name: "DepartamentosEmpleados");
 
             migrationBuilder.DropTable(
-                name: "Regiones");
+                name: "HUB");
 
             migrationBuilder.DropTable(
                 name: "Marcas");
+
+            migrationBuilder.DropTable(
+                name: "Regiones");
 
             migrationBuilder.DropTable(
                 name: "Paises");
