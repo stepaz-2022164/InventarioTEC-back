@@ -46,8 +46,8 @@ public class Empleado
     public int idRegion{ get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
-    [Column("idHUB", TypeName = "int")]
-    public int idHUB{ get; set; }
+    [Column("idSede", TypeName = "int")]
+    public int idSede{ get; set; }
 
     [ForeignKey("idPuestoEmpleado")]
     public PuestoEmpleado PuestoEmpleado {get; set;} = null!;
@@ -61,6 +61,6 @@ public class Empleado
     [ForeignKey("idRegion")]
     public Region Region {get; set;} = null!;
 
-    [ForeignKey("idHUB")]
-    public HUB HUB {get; set;} = null!;
+    [ForeignKey("idSede")]
+    public Sede Sede {get; set;} = null!;
 }   

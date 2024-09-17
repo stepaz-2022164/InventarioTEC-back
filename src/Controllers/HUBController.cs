@@ -3,32 +3,29 @@ using GestorInventario.src.Models.Contexts;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
-namespace GestorInventario.Controllers
+namespace GestorInventario.src.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class PaisController : ControllerBase
+    public class HUBController : ControllerBase
     {
         private readonly InventarioContext _context;
-
-        public PaisController(InventarioContext context)
-        {
+        public HUBController(InventarioContext context){
             _context = context;
         }
 
         [ValidateJWT]
         [HttpGet]
-        [Route("getPaises")]
-        public async Task<ActionResult<IEnumerable<Pais>>> GetPaises()
-        {
+        [Route("getHUBS")]
+        public async Task<ActionResult<IEnumerable<HUB>>> GetHUBS(){
             try
             {
-                var paises = await _context.Paises.ToListAsync();
-                if (paises.Count() == 0)
+                var hubs = await _context.HUB.ToListAsync();
+                if (hubs.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(paises);
+                return Ok(hubs);
             }
             catch (Exception e)
             {
@@ -39,17 +36,16 @@ namespace GestorInventario.Controllers
 
         [ValidateJWT]
         [HttpGet]
-        [Route("getPais")]
-        public async Task<ActionResult<Pais>> GetPais(int id)
-        {
+        [Route("getHUB")]
+        public async Task<ActionResult<HUB>> GetHUB(int id){
             try
             {
-                var pais = await _context.Paises.FindAsync(id);
-                if (pais == null)
+                var hub = await _context.HUB.FindAsync(id);
+                if (hub == null)
                 {
-                    return StatusCode(StatusCodes.Status404NotFound, "No se encontro el registro");
+                    return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
-                return Ok(pais);
+                return Ok(hub);
             }
             catch (Exception e)
             {

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20240916204630_InitialMigration")]
+    [Migration("20240917162310_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -105,10 +105,6 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idDepartamentoEmpleado");
 
-                    b.Property<int>("idHUB")
-                        .HasColumnType("int")
-                        .HasColumnName("idHUB");
-
                     b.Property<int>("idPuestoEmpleado")
                         .HasColumnType("int")
                         .HasColumnName("idPuestoEmpleado");
@@ -116,6 +112,10 @@ namespace GestorInventario.Migrations
                     b.Property<int>("idRegion")
                         .HasColumnType("int")
                         .HasColumnName("idRegion");
+
+                    b.Property<int>("idSede")
+                        .HasColumnType("int")
+                        .HasColumnName("idSede");
 
                     b.Property<string>("nombreEmpleado")
                         .IsRequired()
@@ -139,11 +139,11 @@ namespace GestorInventario.Migrations
 
                     b.HasIndex("idDepartamentoEmpleado");
 
-                    b.HasIndex("idHUB");
-
                     b.HasIndex("idPuestoEmpleado");
 
                     b.HasIndex("idRegion");
+
+                    b.HasIndex("idSede");
 
                     b.ToTable("Empleados");
                 });
@@ -167,10 +167,6 @@ namespace GestorInventario.Migrations
                         .HasColumnType("date")
                         .HasColumnName("fechaDeIngreso");
 
-                    b.Property<int>("idHUB")
-                        .HasColumnType("int")
-                        .HasColumnName("idHUB");
-
                     b.Property<int>("idTipoDeEquipo")
                         .HasColumnType("int")
                         .HasColumnName("idTipoDeEquipo");
@@ -182,8 +178,6 @@ namespace GestorInventario.Migrations
                         .HasColumnName("numeroDeSerie");
 
                     b.HasKey("idEquipo");
-
-                    b.HasIndex("idHUB");
 
                     b.HasIndex("idTipoDeEquipo");
 
@@ -380,6 +374,50 @@ namespace GestorInventario.Migrations
                     b.ToTable("ReporteEquipos");
                 });
 
+            modelBuilder.Entity("Sede", b =>
+                {
+                    b.Property<int>("idSede")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("idSede");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idSede"));
+
+                    b.Property<string>("direccionSede")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("direccionSede");
+
+                    b.Property<int>("idHUB")
+                        .HasColumnType("int")
+                        .HasColumnName("idHUB");
+
+                    b.Property<int>("idPais")
+                        .HasColumnType("int")
+                        .HasColumnName("idPais");
+
+                    b.Property<int>("idRegion")
+                        .HasColumnType("int")
+                        .HasColumnName("idRegion");
+
+                    b.Property<string>("nombreSede")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("varchar(100)")
+                        .HasColumnName("nombreSede");
+
+                    b.HasKey("idSede");
+
+                    b.HasIndex("idHUB");
+
+                    b.HasIndex("idPais");
+
+                    b.HasIndex("idRegion");
+
+                    b.ToTable("Sedes");
+                });
+
             modelBuilder.Entity("TipoDeEquipo", b =>
                 {
                     b.Property<int>("idTipoDeEquipo")
@@ -467,12 +505,6 @@ namespace GestorInventario.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
-                    b.HasOne("HUB", "HUB")
-                        .WithMany()
-                        .HasForeignKey("idHUB")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("PuestoEmpleado", "PuestoEmpleado")
                         .WithMany()
                         .HasForeignKey("idPuestoEmpleado")
@@ -485,32 +517,30 @@ namespace GestorInventario.Migrations
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
+                    b.HasOne("Sede", "Sede")
+                        .WithMany()
+                        .HasForeignKey("idSede")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
                     b.Navigation("AreaEmpleado");
 
                     b.Navigation("DepartamentoEmpleado");
 
-                    b.Navigation("HUB");
-
                     b.Navigation("PuestoEmpleado");
 
                     b.Navigation("Region");
+
+                    b.Navigation("Sede");
                 });
 
             modelBuilder.Entity("Equipo", b =>
                 {
-                    b.HasOne("HUB", "HUB")
-                        .WithMany()
-                        .HasForeignKey("idHUB")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
-
                     b.HasOne("TipoDeEquipo", "TipoDeEquipo")
                         .WithMany()
                         .HasForeignKey("idTipoDeEquipo")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
-
-                    b.Navigation("HUB");
 
                     b.Navigation("TipoDeEquipo");
                 });
@@ -573,6 +603,33 @@ namespace GestorInventario.Migrations
                         .IsRequired();
 
                     b.Navigation("Equipo");
+                });
+
+            modelBuilder.Entity("Sede", b =>
+                {
+                    b.HasOne("HUB", "HUB")
+                        .WithMany()
+                        .HasForeignKey("idHUB")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Pais", "Pais")
+                        .WithMany()
+                        .HasForeignKey("idPais")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("Region", "Region")
+                        .WithMany()
+                        .HasForeignKey("idRegion")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("HUB");
+
+                    b.Navigation("Pais");
+
+                    b.Navigation("Region");
                 });
 
             modelBuilder.Entity("TipoDeEquipo", b =>

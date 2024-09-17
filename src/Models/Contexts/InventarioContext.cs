@@ -16,7 +16,7 @@ namespace GestorInventario.src.Models.Contexts
         public DbSet<Marca> Marcas {get; set;}
         public DbSet<TipoDeEquipo> TiposDeEquipos {get; set;} 
         public DbSet<Empleado> Empleados {get; set;}
-        // public DbSet<Sede> Sedes {get; set;}
+        public DbSet<Sede> Sedes {get; set;}
         public DbSet<DepartamentoEmpleado> DepartamentosEmpleados {get; set;}
         public DbSet<AreaEmpleado> AreasEmpleados {get; set;}
         public DbSet<PuestoEmpleado> PuestosEmpleados {get; set;}
@@ -40,9 +40,9 @@ namespace GestorInventario.src.Models.Contexts
             modelBuilder.Entity<HUB>().HasOne(h => h.Region).WithMany().HasForeignKey(h => h.idRegion).OnDelete(DeleteBehavior.Restrict); //Quitar eliminación en cascada
             modelBuilder.Entity<HUB>().HasOne(h => h.Pais).WithMany().HasForeignKey(h => h.idPais).OnDelete(DeleteBehavior.Restrict);
             //Sede
-            // modelBuilder.Entity<Sede>().HasOne(s => s.Pais).WithMany().HasForeignKey(s => s.idPais).OnDelete(DeleteBehavior.Restrict);
-            // modelBuilder.Entity<Sede>().HasOne(s => s.Region).WithMany().HasForeignKey(s => s.idRegion).OnDelete(DeleteBehavior.Restrict);
-            // modelBuilder.Entity<Sede>().HasOne(s => s.HUB).WithMany().HasForeignKey(s => s.idHUB).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Sede>().HasOne(s => s.Pais).WithMany().HasForeignKey(s => s.idPais).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Sede>().HasOne(s => s.Region).WithMany().HasForeignKey(s => s.idRegion).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Sede>().HasOne(s => s.HUB).WithMany().HasForeignKey(s => s.idHUB).OnDelete(DeleteBehavior.Restrict);
             //Departamento Empleado
             modelBuilder.Entity<DepartamentoEmpleado>();
             //Area Empleado
@@ -53,7 +53,7 @@ namespace GestorInventario.src.Models.Contexts
             modelBuilder.Entity<Empleado>().HasOne(e => e.DepartamentoEmpleado).WithMany().HasForeignKey(e => e.idDepartamentoEmpleado).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Empleado>().HasOne(e => e.AreaEmpleado).WithMany().HasForeignKey(e => e.idAreaEmpleado).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Empleado>().HasOne(e => e.Region).WithMany().HasForeignKey(e => e.idRegion).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Empleado>().HasOne(e => e.HUB).WithMany().HasForeignKey(e => e.idHUB).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Empleado>().HasOne(e => e.Sede).WithMany().HasForeignKey(e => e.idSede).OnDelete(DeleteBehavior.Restrict);
             //Usuario
             modelBuilder.Entity<Usuario>();
             //Edificio
@@ -66,7 +66,6 @@ namespace GestorInventario.src.Models.Contexts
             modelBuilder.Entity<TipoDeEquipo>();
             //Equipo
             modelBuilder.Entity<Equipo>().HasOne(equi => equi.TipoDeEquipo).WithMany().HasForeignKey(equi => equi.idTipoDeEquipo).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Equipo>().HasOne(equi => equi.HUB).WithMany().HasForeignKey(equi => equi.idHUB).OnDelete(DeleteBehavior.Restrict);
             //Propietario Equipo
             modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.Empleado).WithMany().HasForeignKey(pe => pe.idEmpleado).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.Empleado).WithMany().HasForeignKey(pe => pe.idEmpleado).OnDelete(DeleteBehavior.Restrict);

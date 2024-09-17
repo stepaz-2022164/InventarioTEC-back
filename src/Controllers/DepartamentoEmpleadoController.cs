@@ -22,11 +22,10 @@ namespace GestorInventario.src.Controllers
         [Route("getDepartamentosEmpleados")]
         public async Task<ActionResult<IEnumerable<DepartamentoEmpleado>>> GetDepartamentosEmpleados()
         {
-            var usuario = HttpContext.Items["Usuario"] as Usuario;
             try
             {
                 var departamentosEmpleados = await _context.DepartamentosEmpleados.ToListAsync();
-                if (departamentosEmpleados == null)
+                if (departamentosEmpleados.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
@@ -38,6 +37,7 @@ namespace GestorInventario.src.Controllers
             }
         }
 
+        [ValidateJWT]
         [HttpGet]
         [Route("getDepartamentoEmpleado")]
         public async Task<ActionResult<DepartamentoEmpleado>> GetDepartamentoEmpleado(int id)
