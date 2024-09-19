@@ -31,8 +31,9 @@ namespace GestorInventario.src.Controllers
                 }
                 return Ok(departamentosEmpleados);
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Console.Error.WriteLine(e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los Departamentos");
             }
         }

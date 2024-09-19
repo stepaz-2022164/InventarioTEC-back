@@ -23,6 +23,7 @@ public class Sede
     public int idPais { get; set; }
 
     [ForeignKey("idPais")]
+    [NotMapped]
     public Pais Pais { get; set; } = null!;
 
     [Required(ErrorMessage = "El parametro {0} es obligatorio")]
@@ -30,6 +31,7 @@ public class Sede
     public int idRegion { get; set; }
 
     [ForeignKey("idRegion")]
+    [NotMapped]
     public Region Region { get; set; } = null!;
 
     [Required(ErrorMessage = "El parametro {0} es obligatorio")]
@@ -37,5 +39,6 @@ public class Sede
     public int idHUB { get; set; }
 
     [ForeignKey("idHUB")]
+    [NotMapped]
     public HUB HUB { get; set; } = null!;
 }
