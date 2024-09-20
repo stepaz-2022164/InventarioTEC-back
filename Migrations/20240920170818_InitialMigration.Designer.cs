@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20240920143906_InitialMigration")]
+    [Migration("20240920170818_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -39,6 +39,10 @@ namespace GestorInventario.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("descripcionAreaEmpleado");
+
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
 
                     b.Property<int>("idDepartamentoEmpleado")
                         .HasColumnType("int")
@@ -96,6 +100,10 @@ namespace GestorInventario.Migrations
                         .IsRequired()
                         .HasColumnType("varchar(50)")
                         .HasColumnName("correoEmpleado");
+
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
 
                     b.Property<int>("idAreaEmpleado")
                         .HasColumnType("int")
@@ -157,11 +165,15 @@ namespace GestorInventario.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idEquipo"));
 
-                    b.Property<string>("estado")
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
+                    b.Property<string>("estadoEquipo")
                         .IsRequired()
                         .HasMaxLength(10)
                         .HasColumnType("varchar(10)")
-                        .HasColumnName("estado");
+                        .HasColumnName("estadoEquipo");
 
                     b.Property<DateOnly>("fechaDeIngreso")
                         .HasColumnType("date")
@@ -231,6 +243,10 @@ namespace GestorInventario.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("descripcionMarca");
 
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
                     b.Property<string>("nombreMarca")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -271,6 +287,10 @@ namespace GestorInventario.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPropietarioEquipopacion"));
 
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
                     b.Property<DateOnly>("fechaDeEntrega")
                         .HasColumnType("date")
                         .HasColumnName("fechaDeEntrega");
@@ -307,6 +327,14 @@ namespace GestorInventario.Migrations
                         .HasColumnType("varchar(200)")
                         .HasColumnName("descripcionPuestoEmpleado");
 
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
+                    b.Property<int>("idAreaEmpleado")
+                        .HasColumnType("int")
+                        .HasColumnName("idAreaEmpleado");
+
                     b.Property<string>("nombrePuestoEmpleado")
                         .IsRequired()
                         .HasMaxLength(100)
@@ -314,6 +342,8 @@ namespace GestorInventario.Migrations
                         .HasColumnName("nombrePuestoEmpleado");
 
                     b.HasKey("idPuestoEmpleado");
+
+                    b.HasIndex("idAreaEmpleado");
 
                     b.ToTable("PuestosEmpleados");
                 });
@@ -358,6 +388,10 @@ namespace GestorInventario.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("descripcionReporteEquipo");
+
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
 
                     b.Property<DateOnly>("fechaReporte")
                         .HasColumnType("date")
@@ -437,6 +471,10 @@ namespace GestorInventario.Migrations
                         .HasColumnType("text")
                         .HasColumnName("descripcionTipoDeEquipo");
 
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
                     b.Property<int>("idMarca")
                         .HasColumnType("int")
                         .HasColumnName("idMarca");
@@ -466,6 +504,10 @@ namespace GestorInventario.Migrations
                         .HasColumnName("idUsuario");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idUsuario"));
+
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
 
                     b.Property<string>("pass")
                         .IsRequired()
@@ -585,6 +627,17 @@ namespace GestorInventario.Migrations
                     b.Navigation("Empleado");
 
                     b.Navigation("Equipo");
+                });
+
+            modelBuilder.Entity("PuestoEmpleado", b =>
+                {
+                    b.HasOne("AreaEmpleado", "AreaEmpleado")
+                        .WithMany()
+                        .HasForeignKey("idAreaEmpleado")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AreaEmpleado");
                 });
 
             modelBuilder.Entity("Region", b =>
