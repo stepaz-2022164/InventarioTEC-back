@@ -25,4 +25,7 @@ public class AreaEmpleado
 
     [ForeignKey("idDepartamentoEmpleado")]
     public DepartamentoEmpleado DepartamentoEmpleado { get; set; } = null!;
+
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
 }

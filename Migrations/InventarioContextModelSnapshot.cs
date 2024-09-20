@@ -386,6 +386,10 @@ namespace GestorInventario.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("direccionSede");
 
+                    b.Property<int>("estado")
+                        .HasColumnType("int")
+                        .HasColumnName("estado");
+
                     b.Property<int>("idHUB")
                         .HasColumnType("int")
                         .HasColumnName("idHUB");
