@@ -24,7 +24,7 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var sedes = await _context.Sedes.ToListAsync();
+                var sedes = await _context.Sedes.Where(s => s.estado == 1).ToListAsync();
                 if (sedes.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
@@ -46,7 +46,7 @@ namespace GestorInventario.src.Controllers
             try
             {
                 var sede = await _context.Sedes.FindAsync(id);
-                if (sede == null)
+                if (sede == null || sede.estado == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontro el registro");
                 }
@@ -143,7 +143,7 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var sedeExistente = await _context.Sedes.FindAsync(1);
+                var sedeExistente = await _context.Sedes.FindAsync(id);
                 if (sedeExistente == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
@@ -158,9 +158,31 @@ namespace GestorInventario.src.Controllers
                 {
                     sedeExistente!.direccionSede = sedeDTO.direccionSede;
                 }
-                sedeExistente!.nombreSede = sedeDTO.nombreSede;
                 await _context.SaveChangesAsync();
                 return Ok("Sede actualizada correctamente");
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al actualizar el registro");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpPut]
+        [Route("deleteSede")]
+        public async Task<ActionResult<Sede>> DeleteSede(int id)
+        {
+            try
+            {
+                var sedeEliminada = await _context.Sedes.FindAsync(id);
+                if (sedeEliminada == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
+                }
+                sedeEliminada.estado = 0;
+                await _context.SaveChangesAsync();
+                return Ok("Sede eliminada correctamente");
             }
             catch (Exception e)
             {

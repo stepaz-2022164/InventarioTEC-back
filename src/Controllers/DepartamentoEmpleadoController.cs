@@ -40,8 +40,8 @@ namespace GestorInventario.src.Controllers
 
         [ValidateJWT]
         [HttpGet]
-        [Route("getDepartamentoEmpleado")]
-        public async Task<ActionResult<DepartamentoEmpleado>> GetDepartamentoEmpleado(int id)
+        [Route("getDepartamentoEmpleadoById")]
+        public async Task<ActionResult<DepartamentoEmpleado>> GetDepartamentoEmpleadoById(int id)
         {
             try
             {
@@ -55,6 +55,26 @@ namespace GestorInventario.src.Controllers
             catch (Exception)
             {
 
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
+        [Route("getDepartamentoEmpleadoByName")]
+        public async Task<ActionResult<DepartamentoEmpleado>> GetDepartamentoEmpleadoByName(string name){
+            try
+            {
+                var departamentoEmpleado = await _context.DepartamentosEmpleados.Where(de => de.nombreDepartamentoEmpleado.Contains(name)).ToListAsync();
+                if (departamentoEmpleado == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+                return Ok(departamentoEmpleado);
+            }
+            catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
             }
         }
@@ -94,8 +114,8 @@ namespace GestorInventario.src.Controllers
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
-                departamentoExistente!.nombreDepartamentoEmpleado = departamentoEmpleado.nombreDepartamentoEmpleado;
-                departamentoExistente!.descripcionAreaEmpleado = departamentoEmpleado.descripcionAreaEmpleado;
+                departamentoExistente.nombreDepartamentoEmpleado = departamentoEmpleado.nombreDepartamentoEmpleado;
+                departamentoExistente.descripcionAreaEmpleado = departamentoEmpleado.descripcionAreaEmpleado;
                 await _context.SaveChangesAsync();
                 return Ok("Producto actualizado correctamente");
             }

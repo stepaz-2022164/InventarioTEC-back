@@ -41,4 +41,7 @@ public class Sede
     [ForeignKey("idHUB")]
     [NotMapped]
     public HUB HUB { get; set; } = null!;
+
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
 }

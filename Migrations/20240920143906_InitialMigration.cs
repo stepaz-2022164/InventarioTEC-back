@@ -223,7 +223,8 @@ namespace GestorInventario.Migrations
                     direccionSede = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     idPais = table.Column<int>(type: "int", nullable: false),
                     idRegion = table.Column<int>(type: "int", nullable: false),
-                    idHUB = table.Column<int>(type: "int", nullable: false)
+                    idHUB = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
