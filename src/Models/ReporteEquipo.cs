@@ -23,6 +23,9 @@ public class ReporteEquipo
     [Column("idEquipo", TypeName = "int")]
     public int idEquipo { get; set; }
 
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
+
     [ForeignKey("idEquipo")]
     public Equipo Equipo { get; set; } = null!;
 }

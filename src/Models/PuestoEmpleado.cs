@@ -17,4 +17,14 @@ public class PuestoEmpleado
     [MaxLength(100, ErrorMessage = "El parámetro {0} solo puede tener {1} carácteres")]
     [Column("descripcionPuestoEmpleado", TypeName = "varchar(200)")]
     public string descripcionPuestoEmpleado { get; set; } = null!;
+
+    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
+    [Column("idAreaEmpleado", TypeName = "int")]
+    public int idAreaEmpleado { get; set; }
+
+    [ForeignKey("idAreaEmpleado")]
+    public AreaEmpleado AreaEmpleado { get; set; } = null!;
+
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
 }

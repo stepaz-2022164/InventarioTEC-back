@@ -18,4 +18,7 @@ public class Usuario
     [Column("pass", TypeName = "varchar(10)")]
     public string pass { get; set; } = null!;
 
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
+
 }
