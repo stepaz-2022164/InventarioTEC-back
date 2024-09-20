@@ -66,7 +66,7 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var sede = await _context.Sedes.Where(s => s.nombreSede.Contains(name)).ToListAsync();
+                var sede = await _context.Sedes.Where(s => s.estado == 1 && s.nombreSede.Contains(name)).ToListAsync();
                 if (sede == null || sede.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
@@ -175,19 +175,19 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var sedeEliminada = await _context.Sedes.FindAsync(id);
-                if (sedeEliminada == null)
+                var sedeExistente = await _context.Sedes.FindAsync(id);
+                if (sedeExistente == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
-                sedeEliminada.estado = 0;
+                sedeExistente.estado = 0;
                 await _context.SaveChangesAsync();
                 return Ok("Sede eliminada correctamente");
             }
             catch (Exception e)
             {
                 Console.Error.WriteLine(e);
-                return StatusCode(StatusCodes.Status500InternalServerError, "Error al actualizar el registro");
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al eliminar el registro");
             }
         }
     }

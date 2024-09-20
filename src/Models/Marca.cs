@@ -18,4 +18,7 @@ public class Marca
     [MaxLength(100, ErrorMessage = "El parámetro {0} solo puede tener {1} carácteres")]
     [Column("descripcionMarca", TypeName = "varchar(100)")]
     public string descripcionMarca { get; set; } = null!;
+
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
 }

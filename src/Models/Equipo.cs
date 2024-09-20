@@ -15,8 +15,8 @@ public class Equipo
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [MaxLength(10, ErrorMessage = "El parámetro {0} solo puede tener {1} carácteres")]
-    [Column("estado", TypeName = "varchar(10)")]
-    public string estado { get; set; } = null!;
+    [Column("estadoEquipo", TypeName = "varchar(10)")]
+    public string estadoEquipo { get; set; } = null!;
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [DataType(DataType.Date)]
@@ -26,6 +26,9 @@ public class Equipo
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [Column("idTipoDeEquipo", TypeName = "int")]
     public int idTipoDeEquipo { get; set; }
+
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
 
     [ForeignKey("idTipoDeEquipo")]
     public TipoDeEquipo TipoDeEquipo {get; set; } = null!;

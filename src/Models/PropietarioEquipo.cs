@@ -21,6 +21,9 @@ public class PropietarioEquipo
     [Column("fechaDeEntrega", TypeName = "date")]
     public System.DateOnly fechaDeEntrega { get; set; }
 
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
+
     [ForeignKey("idEmpleado")]
     public Empleado Empleado { get; set;} = null!;
 

@@ -49,6 +49,9 @@ public class Empleado
     [Column("idSede", TypeName = "int")]
     public int idSede{ get; set; }
 
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
+
     [ForeignKey("idPuestoEmpleado")]
     public PuestoEmpleado PuestoEmpleado {get; set;} = null!;
 

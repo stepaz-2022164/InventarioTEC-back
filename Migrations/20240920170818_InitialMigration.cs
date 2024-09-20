@@ -32,7 +32,8 @@ namespace GestorInventario.Migrations
                     idMarca = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     nombreMarca = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    descripcionMarca = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false)
+                    descripcionMarca = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -53,27 +54,14 @@ namespace GestorInventario.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "PuestosEmpleados",
-                columns: table => new
-                {
-                    idPuestoEmpleado = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    nombrePuestoEmpleado = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    descripcionPuestoEmpleado = table.Column<string>(type: "varchar(200)", maxLength: 100, nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_PuestosEmpleados", x => x.idPuestoEmpleado);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "Usuarios",
                 columns: table => new
                 {
                     idUsuario = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     usuario = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
-                    pass = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false)
+                    pass = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -88,7 +76,8 @@ namespace GestorInventario.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     nombreAreaEmpleado = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     descripcionAreaEmpleado = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    idDepartamentoEmpleado = table.Column<int>(type: "int", nullable: false)
+                    idDepartamentoEmpleado = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -110,7 +99,8 @@ namespace GestorInventario.Migrations
                     nombreTipoDeEquipo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     descripcionTipoDeEquipo = table.Column<string>(type: "text", maxLength: 100, nullable: false),
                     stock = table.Column<int>(type: "int", nullable: false),
-                    idMarca = table.Column<int>(type: "int", nullable: false)
+                    idMarca = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -144,15 +134,38 @@ namespace GestorInventario.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "PuestosEmpleados",
+                columns: table => new
+                {
+                    idPuestoEmpleado = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    nombrePuestoEmpleado = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
+                    descripcionPuestoEmpleado = table.Column<string>(type: "varchar(200)", maxLength: 100, nullable: false),
+                    idAreaEmpleado = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PuestosEmpleados", x => x.idPuestoEmpleado);
+                    table.ForeignKey(
+                        name: "FK_PuestosEmpleados_AreasEmpleados_idAreaEmpleado",
+                        column: x => x.idAreaEmpleado,
+                        principalTable: "AreasEmpleados",
+                        principalColumn: "idAreaEmpleado",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "Equipos",
                 columns: table => new
                 {
                     idEquipo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     numeroDeSerie = table.Column<string>(type: "varchar(50)", maxLength: 50, nullable: false),
-                    estado = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
+                    estadoEquipo = table.Column<string>(type: "varchar(10)", maxLength: 10, nullable: false),
                     fechaDeIngreso = table.Column<DateOnly>(type: "date", nullable: false),
-                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false)
+                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -200,7 +213,8 @@ namespace GestorInventario.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     fechaReporte = table.Column<DateOnly>(type: "date", nullable: false),
                     descripcionReporteEquipo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
-                    idEquipo = table.Column<int>(type: "int", nullable: false)
+                    idEquipo = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -263,7 +277,8 @@ namespace GestorInventario.Migrations
                     idDepartamentoEmpleado = table.Column<int>(type: "int", nullable: false),
                     idAreaEmpleado = table.Column<int>(type: "int", nullable: false),
                     idRegion = table.Column<int>(type: "int", nullable: false),
-                    idSede = table.Column<int>(type: "int", nullable: false)
+                    idSede = table.Column<int>(type: "int", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -308,7 +323,8 @@ namespace GestorInventario.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     idEmpleado = table.Column<int>(type: "int", nullable: false),
                     idEquipo = table.Column<int>(type: "int", nullable: false),
-                    fechaDeEntrega = table.Column<DateOnly>(type: "date", nullable: false)
+                    fechaDeEntrega = table.Column<DateOnly>(type: "date", nullable: false),
+                    estado = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -383,6 +399,11 @@ namespace GestorInventario.Migrations
                 column: "idEquipo");
 
             migrationBuilder.CreateIndex(
+                name: "IX_PuestosEmpleados_idAreaEmpleado",
+                table: "PuestosEmpleados",
+                column: "idAreaEmpleado");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Regiones_idPais",
                 table: "Regiones",
                 column: "idPais");
@@ -432,9 +453,6 @@ namespace GestorInventario.Migrations
                 name: "Equipos");
 
             migrationBuilder.DropTable(
-                name: "AreasEmpleados");
-
-            migrationBuilder.DropTable(
                 name: "PuestosEmpleados");
 
             migrationBuilder.DropTable(
@@ -444,13 +462,16 @@ namespace GestorInventario.Migrations
                 name: "TiposDeEquipos");
 
             migrationBuilder.DropTable(
-                name: "DepartamentosEmpleados");
+                name: "AreasEmpleados");
 
             migrationBuilder.DropTable(
                 name: "HUB");
 
             migrationBuilder.DropTable(
                 name: "Marcas");
+
+            migrationBuilder.DropTable(
+                name: "DepartamentosEmpleados");
 
             migrationBuilder.DropTable(
                 name: "Regiones");

@@ -27,6 +27,9 @@ public class TipoDeEquipo
     [Column("idMarca", TypeName = "int")]
     public int idMarca { get; set; }
 
+    [Column("estado", TypeName = "int")]
+    public int estado {get; set;} = 1;
+
     [ForeignKey("idMarca")]
     public Marca Marca { get; set; } = null!;
 }
