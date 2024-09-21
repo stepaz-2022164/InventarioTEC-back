@@ -52,7 +52,7 @@ namespace GestorInventario.src.Models.Contexts
             //Empleado 
             modelBuilder.Entity<Empleado>().HasOne(e => e.DepartamentoEmpleado).WithMany().HasForeignKey(e => e.idDepartamentoEmpleado).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Empleado>().HasOne(e => e.AreaEmpleado).WithMany().HasForeignKey(e => e.idAreaEmpleado).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<Empleado>().HasOne(e => e.Region).WithMany().HasForeignKey(e => e.idRegion).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<Empleado>().HasOne(e => e.PuestoEmpleado).WithMany().HasForeignKey(e => e.idPuestoEmpleado).OnDelete(DeleteBehavior.Restrict);
             modelBuilder.Entity<Empleado>().HasOne(e => e.Sede).WithMany().HasForeignKey(e => e.idSede).OnDelete(DeleteBehavior.Restrict);
             //Usuario
             modelBuilder.Entity<Usuario>();

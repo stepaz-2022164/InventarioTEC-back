@@ -13,10 +13,6 @@ public class Empleado
     public int numeroDeFicha { get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
-    [Column("idPuestoEmpleado", TypeName = "int")]
-    public int idPuestoEmpleado {get; set; }
-
-    [Required(ErrorMessage = "El campo {0} es obligatorio")]
     [StringLength(100, ErrorMessage = "El campo {0} no puede taner mas de {1} caracteres")]
     [Column("nombreEmpleado", TypeName = "varchar(100)")]
     public string nombreEmpleado{ get; set; } = null!;
@@ -42,8 +38,8 @@ public class Empleado
     public int idAreaEmpleado{ get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
-    [Column("idRegion", TypeName = "int")]
-    public int idRegion{ get; set; }
+    [Column("idPuestoEmpleado", TypeName = "int")]
+    public int idPuestoEmpleado {get; set; }
 
     [Required(ErrorMessage = "El campo {0} es obligatorio")]
     [Column("idSede", TypeName = "int")]
@@ -60,9 +56,6 @@ public class Empleado
 
     [ForeignKey("idAreaEmpleado")]
     public AreaEmpleado AreaEmpleado {get; set;} = null!;
-
-    [ForeignKey("idRegion")]
-    public Region Region {get; set;} = null!;
 
     [ForeignKey("idSede")]
     public Sede Sede {get; set;} = null!;

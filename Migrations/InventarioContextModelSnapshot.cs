@@ -114,10 +114,6 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idPuestoEmpleado");
 
-                    b.Property<int>("idRegion")
-                        .HasColumnType("int")
-                        .HasColumnName("idRegion");
-
                     b.Property<int>("idSede")
                         .HasColumnType("int")
                         .HasColumnName("idSede");
@@ -145,8 +141,6 @@ namespace GestorInventario.Migrations
                     b.HasIndex("idDepartamentoEmpleado");
 
                     b.HasIndex("idPuestoEmpleado");
-
-                    b.HasIndex("idRegion");
 
                     b.HasIndex("idSede");
 
@@ -551,12 +545,6 @@ namespace GestorInventario.Migrations
                     b.HasOne("PuestoEmpleado", "PuestoEmpleado")
                         .WithMany()
                         .HasForeignKey("idPuestoEmpleado")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("Region", "Region")
-                        .WithMany()
-                        .HasForeignKey("idRegion")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
@@ -571,8 +559,6 @@ namespace GestorInventario.Migrations
                     b.Navigation("DepartamentoEmpleado");
 
                     b.Navigation("PuestoEmpleado");
-
-                    b.Navigation("Region");
 
                     b.Navigation("Sede");
                 });

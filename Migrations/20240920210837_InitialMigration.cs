@@ -270,13 +270,12 @@ namespace GestorInventario.Migrations
                     idEmpleado = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     numeroDeFicha = table.Column<int>(type: "int", nullable: false),
-                    idPuestoEmpleado = table.Column<int>(type: "int", nullable: false),
                     nombreEmpleado = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     telefonoEmpleado = table.Column<string>(type: "varchar(20)", maxLength: 100, nullable: false),
                     correoEmpleado = table.Column<string>(type: "varchar(50)", nullable: false),
                     idDepartamentoEmpleado = table.Column<int>(type: "int", nullable: false),
                     idAreaEmpleado = table.Column<int>(type: "int", nullable: false),
-                    idRegion = table.Column<int>(type: "int", nullable: false),
+                    idPuestoEmpleado = table.Column<int>(type: "int", nullable: false),
                     idSede = table.Column<int>(type: "int", nullable: false),
                     estado = table.Column<int>(type: "int", nullable: false)
                 },
@@ -300,12 +299,6 @@ namespace GestorInventario.Migrations
                         column: x => x.idPuestoEmpleado,
                         principalTable: "PuestosEmpleados",
                         principalColumn: "idPuestoEmpleado",
-                        onDelete: ReferentialAction.Cascade);
-                    table.ForeignKey(
-                        name: "FK_Empleados_Regiones_idRegion",
-                        column: x => x.idRegion,
-                        principalTable: "Regiones",
-                        principalColumn: "idRegion",
                         onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_Empleados_Sedes_idSede",
@@ -362,11 +355,6 @@ namespace GestorInventario.Migrations
                 name: "IX_Empleados_idPuestoEmpleado",
                 table: "Empleados",
                 column: "idPuestoEmpleado");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_Empleados_idRegion",
-                table: "Empleados",
-                column: "idRegion");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Empleados_idSede",

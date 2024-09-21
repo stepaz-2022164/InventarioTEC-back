@@ -123,7 +123,7 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<PuestoEmpleado>> UpdatePuestoEmpleado(int id,[FromBody] PuesEmpleadoUpdateDTO puesEmpleadoUpdateDTO){
             try
             {
-                var puestoEmpledoExistente = await _context.PuestosEmpleados.FindAsync(id);
+                var puestoEmpledoExistente = await _context.PuestosEmpleados.FirstOrDefaultAsync(pe => pe.idPuestoEmpleado == id && pe.estado == 1);
                 if (puestoEmpledoExistente == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
@@ -155,7 +155,7 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<PuestoEmpleado>> DeletePuestoEmpleado(int id){
             try
             {
-                var puestoEmpleadoExistente = await _context.PuestosEmpleados.FindAsync(id);
+                var puestoEmpleadoExistente = await _context.PuestosEmpleados.FirstOrDefaultAsync(pe => pe.idPuestoEmpleado == id && pe.estado == 1);
                 if (puestoEmpleadoExistente == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
