@@ -161,6 +161,12 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
                 puestoEmpleadoExistente.estado = 0;
+
+                var empleados = await _context.Empleados.Where(e => e.idPuestoEmpleado == puestoEmpleadoExistente.idPuestoEmpleado && e.estado == 1).ToListAsync();
+                if (empleados != null)
+                {
+                    return StatusCode(StatusCodes.Status400BadRequest, "No se puede eliminar el puesto porque hay registros dependientes.");
+                }
                 await _context.SaveChangesAsync();
                 return Ok("Puesto de empleado eliminado correctamente");
             }
