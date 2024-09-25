@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20240920210837_InitialMigration")]
+    [Migration("20240925183045_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -274,12 +274,12 @@ namespace GestorInventario.Migrations
 
             modelBuilder.Entity("PropietarioEquipo", b =>
                 {
-                    b.Property<int>("idPropietarioEquipopacion")
+                    b.Property<int>("idPropietarioEquipo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("idPropietarioEquipo");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPropietarioEquipopacion"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPropietarioEquipo"));
 
                     b.Property<int>("estado")
                         .HasColumnType("int")
@@ -297,7 +297,7 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idEquipo");
 
-                    b.HasKey("idPropietarioEquipopacion");
+                    b.HasKey("idPropietarioEquipo");
 
                     b.HasIndex("idEmpleado");
 

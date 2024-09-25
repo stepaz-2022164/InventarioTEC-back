@@ -271,12 +271,12 @@ namespace GestorInventario.Migrations
 
             modelBuilder.Entity("PropietarioEquipo", b =>
                 {
-                    b.Property<int>("idPropietarioEquipopacion")
+                    b.Property<int>("idPropietarioEquipo")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int")
                         .HasColumnName("idPropietarioEquipo");
 
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPropietarioEquipopacion"));
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("idPropietarioEquipo"));
 
                     b.Property<int>("estado")
                         .HasColumnType("int")
@@ -294,7 +294,7 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idEquipo");
 
-                    b.HasKey("idPropietarioEquipopacion");
+                    b.HasKey("idPropietarioEquipo");
 
                     b.HasIndex("idEmpleado");
 

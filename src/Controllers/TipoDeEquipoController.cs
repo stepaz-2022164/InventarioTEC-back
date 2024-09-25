@@ -46,7 +46,7 @@ namespace GestorInventario.src.Controllers
                 var tipoDeEquipo = await _context.TiposDeEquipos.FindAsync(id);
                 if (tipoDeEquipo == null || tipoDeEquipo.estado == 0)
                 {
-                    return NotFound("No se encontró el registro");
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontró el registro");
                 }
                 return Ok(tipoDeEquipo);
             }
