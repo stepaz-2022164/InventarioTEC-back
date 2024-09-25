@@ -79,6 +79,7 @@ namespace GestorInventario.src.Controllers
             }
         }
 
+        [ValidateJWT]
         [HttpPost]
         [Route("createDepartamentoEmpleado")]
         public async Task<ActionResult<DepartamentoEmpleado>> CreateDepartamentoEmpleado([FromBody] DepartamentoEmpleado departamentoEmpleado)
@@ -89,6 +90,7 @@ namespace GestorInventario.src.Controllers
                 {
                     return BadRequest(ModelState);
                 }
+                var departamentoExistente = await _context.DepartamentosEmpleados.FirstOrDefaultAsync(de => de.nombreDepartamentoEmpleado == departamentoEmpleado.nombreDepartamentoEmpleado);
 
                 await _context.DepartamentosEmpleados.AddAsync(departamentoEmpleado);
                 await _context.SaveChangesAsync();
@@ -102,6 +104,7 @@ namespace GestorInventario.src.Controllers
             }
         }
 
+        [ValidateJWT]
         [HttpPut]
         [Route("updateDepartamentoEmpleado")]
         public async Task<ActionResult<DepartamentoEmpleado>> UpdateDepartamentoEmpleado(int id, [FromBody] DepartamentoEmpleado departamentoEmpleado)
@@ -126,6 +129,7 @@ namespace GestorInventario.src.Controllers
             }
         }
 
+        [ValidateJWT]
         [HttpDelete]
         [Route("deleteDepartamentoEmpleado")]
         public async Task<ActionResult> DeleteDepartamentoEmpleado(int id)

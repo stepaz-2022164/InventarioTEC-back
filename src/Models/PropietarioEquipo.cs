@@ -6,7 +6,7 @@ public class PropietarioEquipo
     [Key]
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [Column("idPropietarioEquipo", TypeName = "int")]
-    public int idPropietarioEquipopacion {get; set;}
+    public int idPropietarioEquipo {get; set;}
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [Column("idEmpleado", TypeName = "int")]
