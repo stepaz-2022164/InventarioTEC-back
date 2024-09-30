@@ -26,6 +26,14 @@ builder.Services.AddAuthentication(options =>{
 });
 builder.Services.AddAuthorization();
 
+//Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAllOrigins",
+        builder => builder.AllowAnyOrigin()
+                        .AllowAnyHeader()
+                        .AllowAnyMethod());
+});
     //Configuración del contexto de base de datos
 builder.Services.AddDbContext<InventarioContext>(o =>
 {
@@ -45,7 +53,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.UseRouting();
 app.UseHttpsRedirection();
+app.UseCors("AllowAllOrigins");
 
 var summaries = new[]
 {
