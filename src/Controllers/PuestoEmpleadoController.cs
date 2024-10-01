@@ -16,18 +16,25 @@ namespace GestorInventario.src.Controllers
             _context = context;
         }
 
-        [ValidateJWT]
         [HttpGet]
         [Route("getPuestosEmpleados")]
-        public async Task<ActionResult<IEnumerable<PuestoEmpleado>>> GetPuestosEmpleados(){
+        public async Task<ActionResult<IEnumerable<PuestoEmpleado>>> GetPuestosEmpleados(int page = 1, int pageSize = 10)
+        {
             try
             {
-                var puestosEmpleados = await _context.PuestosEmpleados.Where(pe => pe.estado == 1).ToListAsync();
+                var totalRecords = await _context.PuestosEmpleados.CountAsync(pe => pe.estado == 1);
+                var puestosEmpleados = await _context.PuestosEmpleados
+                    .Where(pe => pe.estado == 1)
+                    .Skip((page - 1) * pageSize)
+                    .Take(pageSize)
+                    .ToListAsync();
+
                 if (puestosEmpleados.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(puestosEmpleados);
+
+                return Ok(new { data = puestosEmpleados, totalRecords });
             }
             catch (System.Exception e)
             {
@@ -39,7 +46,8 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getPuestoEmpleadoById")]
-        public async Task<ActionResult<PuestoEmpleado>> GetPuestoEmpleado(int id){
+        public async Task<ActionResult<PuestoEmpleado>> GetPuestoEmpleado(int id)
+        {
             try
             {
                 var puestoEmpleado = await _context.PuestosEmpleados.FindAsync(id);
@@ -59,7 +67,8 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getPuestoEmpleadoByName")]
-        public async Task<ActionResult<PuestoEmpleado>> GetPuestoEmpleadoByName(string name){
+        public async Task<ActionResult<PuestoEmpleado>> GetPuestoEmpleadoByName(string name)
+        {
             try
             {
                 var puestoEmpleado = await _context.PuestosEmpleados.Where(pe => pe.nombrePuestoEmpleado.Contains(name) && pe.estado == 1).ToListAsync();
@@ -79,7 +88,8 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpPost]
         [Route("createPuestoEmpleado")]
-        public async Task<ActionResult<PuestoEmpleado>> CreatePuestoEmpleado([FromBody] PuestoEmpleadoDTO puestoEmpleadoDTO){
+        public async Task<ActionResult<PuestoEmpleado>> CreatePuestoEmpleado([FromBody] PuestoEmpleadoDTO puestoEmpleadoDTO)
+        {
             try
             {
                 if (!ModelState.IsValid!)
@@ -99,7 +109,8 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontro el área del empleado");
                 }
 
-                var puestoEmpleado = new PuestoEmpleado{
+                var puestoEmpleado = new PuestoEmpleado
+                {
                     nombrePuestoEmpleado = puestoEmpleadoDTO.nombrePuestoEmpleado,
                     descripcionPuestoEmpleado = puestoEmpleadoDTO.descripcionPuestoEmpleado,
                     idAreaEmpleado = puestoEmpleadoDTO.idAreaEmpleado,
@@ -120,7 +131,8 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpPut]
         [Route("updatePuestoEmpleado")]
-        public async Task<ActionResult<PuestoEmpleado>> UpdatePuestoEmpleado(int id,[FromBody] PuesEmpleadoUpdateDTO puesEmpleadoUpdateDTO){
+        public async Task<ActionResult<PuestoEmpleado>> UpdatePuestoEmpleado(int id, [FromBody] PuesEmpleadoUpdateDTO puesEmpleadoUpdateDTO)
+        {
             try
             {
                 var puestoEmpledoExistente = await _context.PuestosEmpleados.FirstOrDefaultAsync(pe => pe.idPuestoEmpleado == id && pe.estado == 1);
@@ -152,7 +164,8 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpPut]
         [Route("deletePuestoEmpleado")]
-        public async Task<ActionResult<PuestoEmpleado>> DeletePuestoEmpleado(int id){
+        public async Task<ActionResult<PuestoEmpleado>> DeletePuestoEmpleado(int id)
+        {
             try
             {
                 var puestoEmpleadoExistente = await _context.PuestosEmpleados.FirstOrDefaultAsync(pe => pe.idPuestoEmpleado == id && pe.estado == 1);
