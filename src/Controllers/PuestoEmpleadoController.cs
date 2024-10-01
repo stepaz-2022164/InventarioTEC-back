@@ -16,20 +16,29 @@ namespace GestorInventario.src.Controllers
             _context = context;
         }
 
+        [ValidateJWT]
         [HttpGet]
         [Route("getPuestosEmpleados")]
-        public async Task<ActionResult<IEnumerable<PuestoEmpleado>>> GetPuestosEmpleados(int page = 1, int pageSize = 10)
+        public async Task<ActionResult<IEnumerable<PuestoEmpleado>>> GetPuestosEmpleados(int pagina = 1, int numeroPaginas = 10)
         {
             try
             {
                 var totalRecords = await _context.PuestosEmpleados.CountAsync(pe => pe.estado == 1);
                 var puestosEmpleados = await _context.PuestosEmpleados
                     .Where(pe => pe.estado == 1)
-                    .Skip((page - 1) * pageSize)
-                    .Take(pageSize)
+                    .Include(pe => pe.AreaEmpleado)  // Incluir la entidad relacionada
+                    .Skip((pagina - 1) * numeroPaginas)
+                    .Take(numeroPaginas)
+                    .Select(pe => new
+                    {
+                        pe.idPuestoEmpleado,
+                        pe.nombrePuestoEmpleado,
+                        pe.descripcionPuestoEmpleado,
+                        nombreAreaEmpleado = pe.AreaEmpleado.nombreAreaEmpleado // Traer el nombre del área
+                    })
                     .ToListAsync();
 
-                if (puestosEmpleados.Count() == 0)
+                if (puestosEmpleados.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
@@ -42,6 +51,7 @@ namespace GestorInventario.src.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
             }
         }
+
 
         [ValidateJWT]
         [HttpGet]

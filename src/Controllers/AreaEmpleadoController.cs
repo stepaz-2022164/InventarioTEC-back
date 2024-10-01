@@ -17,15 +17,30 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getAreasEmpleados")]
-        public async Task<ActionResult<IEnumerable<AreaEmpleado>>> GetAreasEmpleados(){
+        public async Task<ActionResult<IEnumerable<AreaEmpleado>>> GetAreasEmpleados(int pagina = 1, int numeroPaginas = 10){
             try
             {
-                var areasEmpleados = await _context.AreasEmpleados.Where(ae => ae.estado == 1).ToListAsync();
+                var totalRecords = await _context.AreasEmpleados.CountAsync(ae => ae.estado == 1);
+                Console.WriteLine($"Página: {pagina}, Registros por página: {numeroPaginas}");
+                Console.WriteLine($"Skip: {(pagina - 1) * numeroPaginas}, Take: {numeroPaginas}");
+                var areasEmpleados = await _context.AreasEmpleados
+                .Where(ae => ae.estado == 1)
+                .Include(ae => ae.DepartamentoEmpleado)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select( ae => new {
+                    ae.idAreaEmpleado,
+                    ae.nombreAreaEmpleado,
+                    ae.descripcionAreaEmpleado,
+                    nombreDepartamentoEmpleado = ae.DepartamentoEmpleado.nombreDepartamentoEmpleado
+                })
+                .ToListAsync();
+
                 if (areasEmpleados.Count() == 0)
                 {
                     return NotFound("No se encontraron registros");
                 }
-                return Ok(areasEmpleados);
+                return Ok(new {data = areasEmpleados, totalRecords});
             }
             catch (Exception e)
             {
@@ -46,6 +61,26 @@ namespace GestorInventario.src.Controllers
                     return NotFound("No se encontró el registro");
                 }
                 return Ok(areaEmpleado);
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
+        [Route("getAreaEmpleadoByName")]
+        public async Task<ActionResult<AreaEmpleado>> GetAreaEmpleadoByName(string name){
+            try
+            {
+                var areasEmpleados = await _context.AreasEmpleados.Where(ae => ae.estado == 1 && ae.nombreAreaEmpleado.Contains(name)).ToListAsync();
+                if (areasEmpleados == null || areasEmpleados.Count == 0)
+                {
+                    return NotFound("No se encontraron registros");
+                }
+                return Ok(areasEmpleados);
             }
             catch (System.Exception e)
             {
