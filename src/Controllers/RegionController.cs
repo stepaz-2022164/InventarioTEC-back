@@ -17,15 +17,25 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getRegiones")]
-        public async Task<ActionResult<IEnumerable<Region>>> GetRegiones() {
+        public async Task<ActionResult<IEnumerable<Region>>> GetRegiones([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10) {
             try
             {
-                var regiones = await _context.Regiones.ToListAsync();
+                var totalRecords = await _context.Regiones.CountAsync();
+                var regiones = await _context.Regiones
+                .Include(re => re.Pais)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(re => new {
+                    re.idRegion,
+                    re.nombreRegion,
+                    nombrePais = re.Pais.nombrePais
+                })
+                .ToListAsync();
                 if (regiones.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(regiones);
+                return Ok(new {data = regiones, totalRecords});
             }
             catch (Exception e)
             {

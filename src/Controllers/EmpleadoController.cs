@@ -20,15 +20,35 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getEmpleados")]
-        public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleados(){
+        public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleados([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10){
             try
             {
-                var empleados = await _context.Empleados.Where(e => e.estado == 1).ToListAsync();
+                var totalRecords = await _context.Empleados.CountAsync(e => e.estado == 1);
+                var empleados = await _context.Empleados
+                .Where(e => e.estado == 1)
+                .Include(e => e.DepartamentoEmpleado)
+                .Include(e => e.AreaEmpleado)
+                .Include(e => e.PuestoEmpleado)
+                .Include(e => e.Sede)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(e => new{
+                    e.idEmpleado,
+                    e.nombreEmpleado,
+                    e.numeroDeFicha,
+                    e.telefonoEmpleado,
+                    e.correoEmpleado,
+                    nombreDepartamentoEmpleado = e.DepartamentoEmpleado.nombreDepartamentoEmpleado,
+                    nombreAreaEmpleado = e.AreaEmpleado.nombreAreaEmpleado,
+                    nombrePuestoEmpleado = e.PuestoEmpleado.nombrePuestoEmpleado,
+                    nombreSede = e.Sede.nombreSede
+                })
+                .ToListAsync();
                 if (empleados.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(empleados);
+                return Ok(new {data = empleados, totalRecords});
             }
             catch (System.Exception e)
             {
@@ -63,7 +83,25 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<Empleado>> GetEmpleadoByName(string name){
             try
             {
-                var empleado = await _context.Empleados.Where(e => e.estado == 1 && e.nombreEmpleado.Contains(name)).ToListAsync();
+                var empleado = await _context.Empleados
+                .Where(e => e.estado == 1 && e.nombreEmpleado.Contains(name))
+                .Include(e => e.DepartamentoEmpleado)
+                .Include(e => e.AreaEmpleado)
+                .Include(e => e.PuestoEmpleado)
+                .Include(e => e.Sede)
+                .Select(e => new{
+                e.idEmpleado,
+                e.nombreEmpleado,
+                e.numeroDeFicha,
+                e.telefonoEmpleado,
+                e.correoEmpleado,
+                nombreDepartamentoEmpleado = e.DepartamentoEmpleado.nombreDepartamentoEmpleado,
+                nombreAreaEmpleado = e.AreaEmpleado.nombreAreaEmpleado,
+                nombrePuestoEmpleado = e.PuestoEmpleado.nombrePuestoEmpleado,
+                nombreSede = e.Sede.nombreSede
+                })
+                .ToListAsync();
+                
                 if (empleado == null || empleado.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");

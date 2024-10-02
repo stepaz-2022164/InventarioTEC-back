@@ -20,16 +20,32 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getSedes")]
-        public async Task<ActionResult<IEnumerable<Sede>>> GetSedes()
+        public async Task<ActionResult<IEnumerable<Sede>>> GetSedes([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10)
         {
             try
             {
-                var sedes = await _context.Sedes.Where(s => s.estado == 1).ToListAsync();
+                var totalRecords = await _context.Sedes.CountAsync(s => s.estado == 1);
+                var sedes = await _context.Sedes
+                .Where(s => s.estado == 1)
+                .Include(s => s.Pais)
+                .Include(s => s.Region)
+                .Include(s => s.HUB)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(s => new {
+                    s.idSede,
+                    s.nombreSede,
+                    s.direccionSede,
+                    nombrePais = s.Pais.nombrePais,
+                    nombreRegion = s.Region.nombreRegion,
+                    nombreHUB = s.HUB.nombreHUB
+                })
+                .ToListAsync();
                 if (sedes.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(sedes);
+                return Ok(new {data = sedes, totalRecords});
             }
             catch (Exception e)
             {
@@ -66,7 +82,20 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var sede = await _context.Sedes.Where(s => s.estado == 1 && s.nombreSede.Contains(name)).ToListAsync();
+                var sede = await _context.Sedes
+                .Where(s => s.estado == 1 && s.nombreSede.Contains(name))
+                .Include(s => s.Pais)
+                .Include(s => s.Region)
+                .Include(s => s.HUB)
+                .Select(s => new {
+                    s.idSede,
+                    s.nombreSede,
+                    s.direccionSede,
+                    nombrePais = s.Pais.nombrePais,
+                    nombreRegion = s.Region.nombreRegion,
+                    nombreHUB = s.HUB.nombreHUB
+                })
+                .ToListAsync();
                 if (sede == null || sede.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");

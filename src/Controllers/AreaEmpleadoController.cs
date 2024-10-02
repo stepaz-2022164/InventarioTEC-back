@@ -17,12 +17,10 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getAreasEmpleados")]
-        public async Task<ActionResult<IEnumerable<AreaEmpleado>>> GetAreasEmpleados(int pagina = 1, int numeroPaginas = 10){
+        public async Task<ActionResult<IEnumerable<AreaEmpleado>>> GetAreasEmpleados([FromQuery] int pagina = 1,[FromQuery] int numeroPaginas = 10){
             try
             {
                 var totalRecords = await _context.AreasEmpleados.CountAsync(ae => ae.estado == 1);
-                Console.WriteLine($"Página: {pagina}, Registros por página: {numeroPaginas}");
-                Console.WriteLine($"Skip: {(pagina - 1) * numeroPaginas}, Take: {numeroPaginas}");
                 var areasEmpleados = await _context.AreasEmpleados
                 .Where(ae => ae.estado == 1)
                 .Include(ae => ae.DepartamentoEmpleado)
@@ -75,7 +73,17 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<AreaEmpleado>> GetAreaEmpleadoByName(string name){
             try
             {
-                var areasEmpleados = await _context.AreasEmpleados.Where(ae => ae.estado == 1 && ae.nombreAreaEmpleado.Contains(name)).ToListAsync();
+                var areasEmpleados = await _context.AreasEmpleados
+                .Where(ae => ae.estado == 1 && ae.nombreAreaEmpleado
+                .Contains(name))
+                .Include(ae => ae.DepartamentoEmpleado)
+                .Select(ae => new {
+                    ae.idAreaEmpleado,
+                    ae.nombreAreaEmpleado,
+                    ae.descripcionAreaEmpleado,
+                    nombreDepartamentoEmpleado = ae.DepartamentoEmpleado.nombreDepartamentoEmpleado
+                })
+                .ToListAsync();
                 if (areasEmpleados == null || areasEmpleados.Count == 0)
                 {
                     return NotFound("No se encontraron registros");

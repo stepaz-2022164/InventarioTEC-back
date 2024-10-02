@@ -17,15 +17,27 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getHUBS")]
-        public async Task<ActionResult<IEnumerable<HUB>>> GetHUBS(){
+        public async Task<ActionResult<IEnumerable<HUB>>> GetHUBS([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10){
             try
             {
-                var hubs = await _context.HUB.ToListAsync();
+                var totalRecords = await _context.HUB.CountAsync();
+                var hubs = await _context.HUB
+                .Include(h => h.Pais)
+                .Include(h => h.Region)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(h => new {
+                    h.idHUB,
+                    h.nombreHUB,
+                    nombrePais = h.Pais.nombrePais,
+                    nombreRegion = h.Region.nombreRegion
+                })
+                .ToListAsync();
                 if (hubs.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(hubs);
+                return Ok(new {data = hubs, totalRecords});
             }
             catch (Exception e)
             {
@@ -48,6 +60,36 @@ namespace GestorInventario.src.Controllers
                 return Ok(hub);
             }
             catch (Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
+        [Route("getHUBSByName")]
+        public async Task<ActionResult<HUB>> GeyHUBSByName(string name){
+            try
+            {
+                var hubs = await _context.HUB
+                .Where(h => h.nombreHUB.Contains(name))
+                .Include(h => h.Pais)
+                .Include(h => h.Region)
+                .Select(h => new {
+                    h.idHUB,
+                    h.nombreHUB,
+                    nombrePais = h.Pais.nombrePais,
+                    nombreRegion = h.Region.nombreRegion
+                })
+                .ToListAsync();
+                if (hubs.Count() == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+                return Ok(hubs);
+            }
+            catch (System.Exception e)
             {
                 Console.Error.WriteLine(e);
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");

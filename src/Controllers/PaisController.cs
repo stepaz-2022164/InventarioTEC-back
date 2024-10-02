@@ -19,16 +19,25 @@ namespace GestorInventario.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getPaises")]
-        public async Task<ActionResult<IEnumerable<Pais>>> GetPaises()
+        public async Task<ActionResult<IEnumerable<Pais>>> GetPaises([FromQuery] int pagina = 1,[FromQuery] int numeroPaginas = 10)
         {
             try
             {
-                var paises = await _context.Paises.ToListAsync();
+                var totalRecords = await _context.Paises.CountAsync();
+                var paises = await _context.Paises
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(p => new {
+                    p.idPais,
+                    p.nombrePais
+                })
+                .ToListAsync();
+
                 if (paises.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(paises);
+                return Ok(new {data = paises, totalRecords});
             }
             catch (Exception e)
             {

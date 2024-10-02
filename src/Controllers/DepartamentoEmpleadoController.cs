@@ -20,16 +20,26 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getDepartamentosEmpleados")]
-        public async Task<ActionResult<IEnumerable<DepartamentoEmpleado>>> GetDepartamentosEmpleados()
+        public async Task<ActionResult<IEnumerable<DepartamentoEmpleado>>> GetDepartamentosEmpleados([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10)
         {
             try
             {
-                var departamentosEmpleados = await _context.DepartamentosEmpleados.ToListAsync();
+                var totalRecords = await _context.DepartamentosEmpleados.CountAsync();
+                var departamentosEmpleados = await _context.DepartamentosEmpleados
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(se => new {
+                    se.idDepartamentoEmpleado,
+                    se.nombreDepartamentoEmpleado,
+                    se.descripcionAreaEmpleado
+                })
+                .ToListAsync();
+                
                 if (departamentosEmpleados.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(departamentosEmpleados);
+                return Ok(new {data = departamentosEmpleados, totalRecords});
             }
             catch (Exception e)
             {
