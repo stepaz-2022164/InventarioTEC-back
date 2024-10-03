@@ -19,15 +19,27 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getMarcas")]
-        public async Task<ActionResult<IEnumerable<Marca>>> GetMarcas(){
+        public async Task<ActionResult<IEnumerable<Marca>>> GetMarcas([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10){
             try
             {
-                var marcas = await _context.Marcas.Where(m => m.estado == 1).ToListAsync();
+                var totalRecords = await _context.Marcas.CountAsync(m => m.estado == 1);
+
+                var marcas = await _context.Marcas
+                .Where(m => m.estado == 1)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(m => new{
+                    m.idMarca,
+                    m.nombreMarca,
+                    m.descripcionMarca
+                })
+                .ToListAsync();
+
                 if (marcas.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(marcas);
+                return Ok(new{data = marcas, totalRecords});
             }
             catch (Exception e)
             {
@@ -64,7 +76,15 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var marca = await _context.Marcas.Where(m => m.nombreMarca.Contains(nombre) && m.estado == 1).ToListAsync();
+                var marca = await _context.Marcas
+                .Where(m => m.nombreMarca.Contains(nombre) && m.estado == 1)
+                .Select(m => new{
+                    m.idMarca,
+                    m.nombreMarca,
+                    m.descripcionMarca
+                })
+                .ToListAsync();
+
                 if (marca == null || marca.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");

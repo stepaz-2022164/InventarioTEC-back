@@ -20,15 +20,29 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getEquipos")]
-        public async Task<ActionResult<IEnumerable<Equipo>>> GetEquipos(){
+        public async Task<ActionResult<IEnumerable<Equipo>>> GetEquipos([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10){
             try
             {
-                var equipos = await _context.Equipos.Where(eq => eq.estado == 1).ToListAsync();
+                var totalRecords = await _context.Equipos.CountAsync(eq => eq.estado == 1);
+                var equipos = await _context.Equipos
+                .Where(eq => eq.estado == 1)
+                .Include(eq => eq.TipoDeEquipo)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(eq => new{
+                    eq.idEquipo,
+                    eq.numeroDeSerie,
+                    eq.estadoEquipo,
+                    eq.fechaDeIngreso,
+                    nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo
+                })
+                .ToListAsync();
+
                 if (equipos.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(equipos);
+                return Ok(new {data = equipos, totalRecords});
             }
             catch (Exception e)
             {
@@ -65,7 +79,20 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var equipo = await _context.Equipos.FirstOrDefaultAsync(eq => eq.estado == 1 && eq.numeroDeSerie == serialNumber);
+                var equipo = await _context.Equipos
+                .Where(eq => eq.estado == 1 && eq.numeroDeSerie.Contains(serialNumber))
+                .Include(eq => eq.TipoDeEquipo)
+                .Select(eq => new{
+                    eq.idEquipo,
+                    eq.numeroDeSerie,
+                    eq.estadoEquipo,
+                    eq.fechaDeIngreso,
+                    nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo,
+                    eq.estado
+                })
+                .ToListAsync();
+                
+
                 if (equipo == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontró el registro");

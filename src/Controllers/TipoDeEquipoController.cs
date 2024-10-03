@@ -20,15 +20,28 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getTiposDeEquipos")]
-        public async Task<ActionResult<IEnumerable<TipoDeEquipo>>> GetTiposDeEquipos(){
+        public async Task<ActionResult<IEnumerable<TipoDeEquipo>>> GetTiposDeEquipos([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10){
             try
             {
-                var tiposDeEquipos = await _context.TiposDeEquipos.Where(te => te.estado == 1).ToListAsync();
+                var totalRecords = await _context.TiposDeEquipos.CountAsync(te => te.estado == 1);
+                var tiposDeEquipos = await _context.TiposDeEquipos
+                .Where(te => te.estado == 1)
+                .Include(te => te.Marca)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(te => new {
+                    te.idTipoDeEquipo,
+                    te.nombreTipoDeEquipo,
+                    te.descripcionTipoDeEquipo,
+                    nombreMarca = te.Marca.nombreMarca
+                })
+                .ToListAsync();
+
                 if (tiposDeEquipos.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(tiposDeEquipos);
+                return Ok(new {data = tiposDeEquipos, totalRecords});
             }
             catch (Exception e)
             {
@@ -63,7 +76,16 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<TipoDeEquipo>> GetTipoDeEquipoByName(string nombre){
             try
             {
-                var tipoDeEquipo = await _context.TiposDeEquipos.Where(te => te.estado == 1 && te.nombreTipoDeEquipo.Contains(nombre)).ToListAsync();
+                var tipoDeEquipo = await _context.TiposDeEquipos
+                .Where(te => te.estado == 1 && te.nombreTipoDeEquipo.Contains(nombre))
+                .Include(te => te.Marca)
+                .Select(te => new {
+                    te.idTipoDeEquipo,
+                    te.nombreTipoDeEquipo,
+                    te.descripcionTipoDeEquipo,
+                    nombreMarca = te.Marca.nombreMarca})
+                .ToListAsync();
+
                 if (tipoDeEquipo == null || tipoDeEquipo.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
@@ -92,7 +114,6 @@ namespace GestorInventario.src.Controllers
                 var tipoDeEquipo = new TipoDeEquipo{
                     nombreTipoDeEquipo = tipoDeEquipoDTO.nombreTipoDeEquipo,
                     descripcionTipoDeEquipo = tipoDeEquipoDTO.descripcionTipoDeEquipo,
-                    stock = tipoDeEquipoDTO.stock,
                     idMarca = tipoDeEquipoDTO.idMarca,
                     estado = 1
                 };
@@ -128,11 +149,6 @@ namespace GestorInventario.src.Controllers
                 if (!string.IsNullOrEmpty(tipoDeEquipoUpdateDTO.descripcionTipoDeEquipo))
                 {
                     tipoDeEquipoExistente.descripcionTipoDeEquipo = tipoDeEquipoUpdateDTO.descripcionTipoDeEquipo;
-                }
-
-                if (tipoDeEquipoUpdateDTO.stock.HasValue)
-                {
-                    tipoDeEquipoExistente!.stock = tipoDeEquipoUpdateDTO.stock.Value;
                 }
 
                 await _context.SaveChangesAsync();

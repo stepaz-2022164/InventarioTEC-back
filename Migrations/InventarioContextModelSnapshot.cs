@@ -476,10 +476,6 @@ namespace GestorInventario.Migrations
                         .HasColumnType("varchar(100)")
                         .HasColumnName("nombreTipoDeEquipo");
 
-                    b.Property<int>("stock")
-                        .HasColumnType("int")
-                        .HasColumnName("stock");
-
                     b.HasKey("idTipoDeEquipo");
 
                     b.HasIndex("idMarca");

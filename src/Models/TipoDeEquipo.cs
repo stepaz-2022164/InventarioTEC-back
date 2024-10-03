@@ -20,10 +20,6 @@ public class TipoDeEquipo
     public string descripcionTipoDeEquipo { get; set; } = null!;
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
-    [Column("stock", TypeName = "int")]
-    public int stock { get; set; }
-
-    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [Column("idMarca", TypeName = "int")]
     public int idMarca { get; set; }
 

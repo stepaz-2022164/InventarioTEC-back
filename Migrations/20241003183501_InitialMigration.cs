@@ -98,7 +98,6 @@ namespace GestorInventario.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     nombreTipoDeEquipo = table.Column<string>(type: "varchar(100)", maxLength: 100, nullable: false),
                     descripcionTipoDeEquipo = table.Column<string>(type: "text", maxLength: 100, nullable: false),
-                    stock = table.Column<int>(type: "int", nullable: false),
                     idMarca = table.Column<int>(type: "int", nullable: false),
                     estado = table.Column<int>(type: "int", nullable: false)
                 },

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20240925183045_InitialMigration")]
+    [Migration("20241003183501_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -478,10 +478,6 @@ namespace GestorInventario.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("varchar(100)")
                         .HasColumnName("nombreTipoDeEquipo");
-
-                    b.Property<int>("stock")
-                        .HasColumnType("int")
-                        .HasColumnName("stock");
 
                     b.HasKey("idTipoDeEquipo");
 

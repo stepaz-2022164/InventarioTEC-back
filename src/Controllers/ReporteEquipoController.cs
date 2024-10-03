@@ -20,15 +20,28 @@ namespace GestorInventario.src.Controllers
         [ValidateJWT]
         [HttpGet]
         [Route("getReporteEquipos")]
-        public async Task<ActionResult<IEnumerable<ReporteEquipo>>> GetReporteEquipos(){
+        public async Task<ActionResult<IEnumerable<ReporteEquipo>>> GetReporteEquipos([FromQuery] int pagina = 1, [FromQuery] int numeroPaginas = 10){
             try
             {
-                var reportesEquipos = await _context.ReporteEquipos.Where(r => r.estado == 1).ToListAsync();
+                var totalRecords = await _context.ReporteEquipos.CountAsync(r => r.estado == 1);
+                var reportesEquipos = await _context.ReporteEquipos
+                .Where(r => r.estado == 1)
+                .Include(r => r.Equipo)
+                .Skip((pagina - 1) * numeroPaginas)
+                .Take(numeroPaginas)
+                .Select(r => new {
+                    r.idReporteEquipo,
+                    r.fechaReporte,
+                    r.descripcionReporteEquipo,
+                    numeroDeSerie = r.Equipo.numeroDeSerie,
+                })
+                .ToListAsync();
+
                 if (reportesEquipos.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
                 }
-                return Ok(reportesEquipos);
+                return Ok(new {data = reportesEquipos, totalRecords});
             }
             catch (Exception e)
             {
@@ -45,6 +58,35 @@ namespace GestorInventario.src.Controllers
             {
                 var reporteEquipo = await _context.ReporteEquipos.FindAsync(id);
                 if (reporteEquipo == null || reporteEquipo.estado == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontró el registro");
+                }
+                return Ok(reporteEquipo);
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener el registro");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
+        [Route("getReporteEquipoBySerialNumber")]
+        public async Task<ActionResult<ReporteEquipo>> GetReporteEquipoBySerialNumber(string serialNumber){
+            try
+            {
+                var reporteEquipo = await _context.ReporteEquipos
+                .Include(r => r.Equipo)
+                .Where(r => r.estado == 1 && r.Equipo.numeroDeSerie.Contains(serialNumber))
+                .Select(r => new {
+                    r.idReporteEquipo,
+                    r.fechaReporte,
+                    r.descripcionReporteEquipo,
+                    numeroDeSerie = r.Equipo.numeroDeSerie})
+                .ToListAsync();
+
+                if (reporteEquipo.Count() == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontró el registro");
                 }
