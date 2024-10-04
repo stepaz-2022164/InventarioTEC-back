@@ -173,10 +173,16 @@ namespace GestorInventario.src.Controllers
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
+
+                var equipo = await _context.Equipos.Where(e => e.idTipoDeEquipo == id && e.estado == 1).ToListAsync();
+                if (equipo.Count() != 0)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar el tipo de equipo porque hay registros dependientes.");
+                }
                 
                 tipoDeEquipoExistente.estado = 0;
                 await _context.SaveChangesAsync();
-                return Ok("Tipo de equipo eliminado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

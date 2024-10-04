@@ -175,9 +175,16 @@ namespace GestorInventario.src.Controllers
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
+
+                var tipoDeEquipo = await _context.TiposDeEquipos.Where(te => te.idMarca == marcaExistente.idMarca && te.estado == 1).ToListAsync();
+                if (tipoDeEquipo != null)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar la marca porque hay registros dependientes.");
+                }
+
                 marcaExistente.estado = 0;
                 await _context.SaveChangesAsync();
-                return Ok("Marca eliminada correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

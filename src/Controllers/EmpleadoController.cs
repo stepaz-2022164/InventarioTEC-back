@@ -230,9 +230,15 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Empleado no encontrado");
                 }
 
+                var propietarioEquipo = await _context.PropietarioEquipos.Where(pe => pe.idEmpleado == empleadoExistente.idEmpleado && pe.estado == 1).ToListAsync();
+                if (propietarioEquipo != null)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar el empleado porque hay registros dependientes.");
+                }
+
                 empleadoExistente.estado = 0;
                 await _context.SaveChangesAsync();
-                return Ok("Empleado eliminado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

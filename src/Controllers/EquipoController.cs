@@ -193,9 +193,17 @@ namespace GestorInventario.src.Controllers
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
+
+                var propietarioEquipo = await _context.PropietarioEquipos.Where(pe => pe.idEquipo == equipoExistente.idEquipo && pe.estado == 1).ToListAsync();
+                var reporteEquipo = await _context.ReporteEquipos.Where(re => re.idEquipo == equipoExistente.idEquipo && re.estado == 1).ToListAsync();
+                if (propietarioEquipo != null || reporteEquipo != null)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar el equipo porque hay registros dependientes.");
+                }
+
                 equipoExistente.estado = 0;
                 await _context.SaveChangesAsync();
-                return Ok("Equipo eliminado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

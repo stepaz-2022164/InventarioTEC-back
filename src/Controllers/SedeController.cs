@@ -204,14 +204,20 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var sedeExistente = await _context.Sedes.FindAsync(id);
+                var sedeExistente = await _context.Sedes.FirstOrDefaultAsync(s => s.idSede == id && s.estado == 1);
                 if (sedeExistente == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
+
+                var empleados = await _context.Empleados.Where(e => e.idEmpleado == sedeExistente.idSede && e.estado == 1).ToListAsync();
+                if (empleados != null)
+                {
+                    return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar la sede porque hay registros dependientes.");
+                }
                 sedeExistente.estado = 0;
                 await _context.SaveChangesAsync();
-                return Ok("Sede eliminada correctamente");
+                return Ok();
             }
             catch (Exception e)
             {

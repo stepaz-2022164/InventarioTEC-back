@@ -179,7 +179,7 @@ namespace GestorInventario.src.Controllers
                 }
                 reporteEquipoExistente.estado = 0;
                 await _context.SaveChangesAsync();
-                return Ok("Reporte de equipo eliminado correctamente");
+                return StatusCode(StatusCodes.Status200OK);
             }
             catch (System.Exception e)
             {
