@@ -28,12 +28,14 @@ namespace GestorInventario.src.Models
                 var propietariosEquipos = await _context.PropietarioEquipos
                 .Where(pe => pe.estado == 1)
                 .Include(pe => pe.Empleado)
+                .Include(pe => pe.TipoDeEquipo)
                 .Include(pe => pe.Equipo)
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(pe => new {
                     pe.idPropietarioEquipo,
                     nombreEmpleado = pe.Empleado.nombreEmpleado,
+                    nombreTipoDeEquipo = pe.TipoDeEquipo.nombreTipoDeEquipo,
                     numeroDeSerie = pe.Equipo.numeroDeSerie,
                     pe.fechaDeEntrega
                 })
@@ -82,11 +84,13 @@ namespace GestorInventario.src.Models
             {
                 var propietarioEquipo = await _context.PropietarioEquipos
                 .Include(pe => pe.Empleado)
+                .Include(pe => pe.TipoDeEquipo)
                 .Include(pe => pe.Equipo)
                 .Where(pe => pe.Empleado.nombreEmpleado.Contains(nombre))
                 .Select(pe => new {
                     pe.idPropietarioEquipo,
                     nombreEmpleado = pe.Empleado.nombreEmpleado,
+                    nombreTipoDeEquipo = pe.TipoDeEquipo.nombreTipoDeEquipo,
                     numeroDeSerie = pe.Equipo.numeroDeSerie,
                     pe.fechaDeEntrega
                 })

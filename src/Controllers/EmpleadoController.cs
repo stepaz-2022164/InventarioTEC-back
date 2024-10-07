@@ -208,7 +208,7 @@ namespace GestorInventario.src.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return Ok("Empleado actualizado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {
@@ -231,7 +231,7 @@ namespace GestorInventario.src.Controllers
                 }
 
                 var propietarioEquipo = await _context.PropietarioEquipos.Where(pe => pe.idEmpleado == empleadoExistente.idEmpleado && pe.estado == 1).ToListAsync();
-                if (propietarioEquipo != null)
+                if (propietarioEquipo.Count() != 0)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar el empleado porque hay registros dependientes.");
                 }

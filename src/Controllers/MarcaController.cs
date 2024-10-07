@@ -177,7 +177,7 @@ namespace GestorInventario.src.Controllers
                 }
 
                 var tipoDeEquipo = await _context.TiposDeEquipos.Where(te => te.idMarca == marcaExistente.idMarca && te.estado == 1).ToListAsync();
-                if (tipoDeEquipo != null)
+                if (tipoDeEquipo.Count() != 0)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar la marca porque hay registros dependientes.");
                 }

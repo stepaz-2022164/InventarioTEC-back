@@ -13,6 +13,10 @@ public class PropietarioEquipo
     public int idEmpleado { get; set; }
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
+    [Column("idTipoDeEquipo", TypeName = "int")]
+    public int idTipoDeEquipo { get; set; }
+
+    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [Column("idEquipo", TypeName = "int")]
     public int idEquipo { get; set; }
 
@@ -26,6 +30,9 @@ public class PropietarioEquipo
 
     [ForeignKey("idEmpleado")]
     public Empleado Empleado { get; set;} = null!;
+
+    [ForeignKey("idTipoDeEquipo")]
+    public TipoDeEquipo TipoDeEquipo { get; set;} = null!;
 
     [ForeignKey("idEquipo")]
     public Equipo Equipo { get; set;} = null!;

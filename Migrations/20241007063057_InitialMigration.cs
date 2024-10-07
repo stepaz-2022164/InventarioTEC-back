@@ -314,6 +314,7 @@ namespace GestorInventario.Migrations
                     idPropietarioEquipo = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     idEmpleado = table.Column<int>(type: "int", nullable: false),
+                    idTipoDeEquipo = table.Column<int>(type: "int", nullable: false),
                     idEquipo = table.Column<int>(type: "int", nullable: false),
                     fechaDeEntrega = table.Column<DateOnly>(type: "date", nullable: false),
                     estado = table.Column<int>(type: "int", nullable: false)
@@ -332,6 +333,12 @@ namespace GestorInventario.Migrations
                         column: x => x.idEquipo,
                         principalTable: "Equipos",
                         principalColumn: "idEquipo",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_PropietarioEquipos_TiposDeEquipos_idTipoDeEquipo",
+                        column: x => x.idTipoDeEquipo,
+                        principalTable: "TiposDeEquipos",
+                        principalColumn: "idTipoDeEquipo",
                         onDelete: ReferentialAction.Cascade);
                 });
 
@@ -384,6 +391,11 @@ namespace GestorInventario.Migrations
                 name: "IX_PropietarioEquipos_idEquipo",
                 table: "PropietarioEquipos",
                 column: "idEquipo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropietarioEquipos_idTipoDeEquipo",
+                table: "PropietarioEquipos",
+                column: "idTipoDeEquipo");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PuestosEmpleados_idAreaEmpleado",

@@ -196,7 +196,7 @@ namespace GestorInventario.src.Controllers
 
                 var propietarioEquipo = await _context.PropietarioEquipos.Where(pe => pe.idEquipo == equipoExistente.idEquipo && pe.estado == 1).ToListAsync();
                 var reporteEquipo = await _context.ReporteEquipos.Where(re => re.idEquipo == equipoExistente.idEquipo && re.estado == 1).ToListAsync();
-                if (propietarioEquipo != null || reporteEquipo != null)
+                if (propietarioEquipo.Count() != 0 || reporteEquipo.Count() != 0)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar el equipo porque hay registros dependientes.");
                 }

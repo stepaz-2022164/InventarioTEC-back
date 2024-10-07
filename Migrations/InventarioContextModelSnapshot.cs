@@ -294,11 +294,17 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idEquipo");
 
+                    b.Property<int>("idTipoDeEquipo")
+                        .HasColumnType("int")
+                        .HasColumnName("idTipoDeEquipo");
+
                     b.HasKey("idPropietarioEquipo");
 
                     b.HasIndex("idEmpleado");
 
                     b.HasIndex("idEquipo");
+
+                    b.HasIndex("idTipoDeEquipo");
 
                     b.ToTable("PropietarioEquipos");
                 });
@@ -603,9 +609,17 @@ namespace GestorInventario.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
+                    b.HasOne("TipoDeEquipo", "TipoDeEquipo")
+                        .WithMany()
+                        .HasForeignKey("idTipoDeEquipo")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.Navigation("Empleado");
 
                     b.Navigation("Equipo");
+
+                    b.Navigation("TipoDeEquipo");
                 });
 
             modelBuilder.Entity("PuestoEmpleado", b =>

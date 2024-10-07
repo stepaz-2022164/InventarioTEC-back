@@ -188,7 +188,7 @@ namespace GestorInventario.src.Controllers
                     sedeExistente!.direccionSede = sedeDTO.direccionSede;
                 }
                 await _context.SaveChangesAsync();
-                return Ok("Sede actualizada correctamente");
+                return Ok();
             }
             catch (Exception e)
             {
@@ -210,8 +210,8 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
 
-                var empleados = await _context.Empleados.Where(e => e.idEmpleado == sedeExistente.idSede && e.estado == 1).ToListAsync();
-                if (empleados != null)
+                var empleados = await _context.Empleados.Where(e => e.idSede == sedeExistente.idSede && e.estado == 1).ToListAsync();
+                if (empleados.Count() != 0)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar la sede porque hay registros dependientes.");
                 }
