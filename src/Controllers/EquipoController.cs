@@ -134,7 +134,7 @@ namespace GestorInventario.src.Controllers
                 };
                 await _context.Equipos.AddAsync(equipo);
                 await _context.SaveChangesAsync();
-                return Ok("Equipo creado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {
