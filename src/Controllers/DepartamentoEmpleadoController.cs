@@ -29,8 +29,8 @@ namespace GestorInventario.src.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(se => new {
-                    se.idDepartamentoEmpleado,
-                    se.nombreDepartamentoEmpleado,
+                    id = se.idDepartamentoEmpleado,
+                    nombre = se.nombreDepartamentoEmpleado,
                     se.descripcionAreaEmpleado
                 })
                 .ToListAsync();

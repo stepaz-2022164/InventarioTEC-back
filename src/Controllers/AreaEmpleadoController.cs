@@ -27,8 +27,8 @@ namespace GestorInventario.src.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select( ae => new {
-                    ae.idAreaEmpleado,
-                    ae.nombreAreaEmpleado,
+                    id = ae.idAreaEmpleado,
+                    nombre = ae.nombreAreaEmpleado,
                     ae.descripcionAreaEmpleado,
                     nombreDepartamentoEmpleado = ae.DepartamentoEmpleado.nombreDepartamentoEmpleado
                 })

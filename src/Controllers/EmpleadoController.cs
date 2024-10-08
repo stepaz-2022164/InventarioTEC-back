@@ -90,8 +90,8 @@ namespace GestorInventario.src.Controllers
                 .Include(e => e.PuestoEmpleado)
                 .Include(e => e.Sede)
                 .Select(e => new{
-                e.idEmpleado,
-                e.nombreEmpleado,
+                id = e.idEmpleado,
+                nombre = e.nombreEmpleado,
                 e.numeroDeFicha,
                 e.telefonoEmpleado,
                 e.correoEmpleado,
@@ -171,7 +171,7 @@ namespace GestorInventario.src.Controllers
 
                 await _context.Empleados.AddAsync(empleado);
                 await _context.SaveChangesAsync();
-                return Ok("Empleado creado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

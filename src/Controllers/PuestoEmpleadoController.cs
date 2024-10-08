@@ -31,8 +31,8 @@ namespace GestorInventario.src.Controllers
                     .Take(numeroPaginas)
                     .Select(pe => new
                     {
-                        pe.idPuestoEmpleado,
-                        pe.nombrePuestoEmpleado,
+                        id = pe.idPuestoEmpleado,
+                        nombre = pe.nombrePuestoEmpleado,
                         pe.descripcionPuestoEmpleado,
                         nombreAreaEmpleado = pe.AreaEmpleado.nombreAreaEmpleado // Traer el nombre del área
                     })

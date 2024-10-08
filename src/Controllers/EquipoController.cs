@@ -172,7 +172,7 @@ namespace GestorInventario.src.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return Ok("Equipo actualizado correctamente");
+                return Ok();
             }
             catch (System.Exception e) 
             {
