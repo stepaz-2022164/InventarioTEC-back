@@ -33,8 +33,8 @@ namespace GestorInventario.src.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(e => new{
-                    e.idEmpleado,
-                    e.nombreEmpleado,
+                    id = e.idEmpleado,
+                    nombre = e.nombreEmpleado,
                     e.numeroDeFicha,
                     e.telefonoEmpleado,
                     e.correoEmpleado,

@@ -28,8 +28,8 @@ namespace GestorInventario.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(p => new {
-                    p.idPais,
-                    p.nombrePais
+                    id = p.idPais,
+                    nombre = p.nombrePais
                 })
                 .ToListAsync();
 

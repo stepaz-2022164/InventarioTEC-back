@@ -26,7 +26,7 @@ namespace GestorInventario.src.Controllers
                 var totalRecords = await _context.PuestosEmpleados.CountAsync(pe => pe.estado == 1);
                 var puestosEmpleados = await _context.PuestosEmpleados
                     .Where(pe => pe.estado == 1)
-                    .Include(pe => pe.AreaEmpleado)  // Incluir la entidad relacionada
+                    .Include(pe => pe.AreaEmpleado)  
                     .Skip((pagina - 1) * numeroPaginas)
                     .Take(numeroPaginas)
                     .Select(pe => new
@@ -81,7 +81,17 @@ namespace GestorInventario.src.Controllers
         {
             try
             {
-                var puestoEmpleado = await _context.PuestosEmpleados.Where(pe => pe.nombrePuestoEmpleado.Contains(name) && pe.estado == 1).ToListAsync();
+                var puestoEmpleado = await _context.PuestosEmpleados
+                .Where(pe => pe.nombrePuestoEmpleado.Contains(name) && pe.estado == 1)
+                .Include(pe => pe.AreaEmpleado)
+                .Select(pe => new
+                    {
+                        id = pe.idPuestoEmpleado,
+                        nombre = pe.nombrePuestoEmpleado,
+                        pe.descripcionPuestoEmpleado,
+                        nombreAreaEmpleado = pe.AreaEmpleado.nombreAreaEmpleado
+                    })
+                .ToListAsync();
                 if (puestoEmpleado == null || puestoEmpleado.Count == 0)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
@@ -129,7 +139,7 @@ namespace GestorInventario.src.Controllers
 
                 await _context.AddAsync(puestoEmpleado);
                 await _context.SaveChangesAsync();
-                return Ok("Puesto de empleado creado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

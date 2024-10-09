@@ -29,8 +29,8 @@ namespace GestorInventario.src.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(m => new{
-                    m.idMarca,
-                    m.nombreMarca,
+                    id = m.idMarca,
+                    nombre = m.nombreMarca,
                     m.descripcionMarca
                 })
                 .ToListAsync();
@@ -79,8 +79,8 @@ namespace GestorInventario.src.Controllers
                 var marca = await _context.Marcas
                 .Where(m => m.nombreMarca.Contains(nombre) && m.estado == 1)
                 .Select(m => new{
-                    m.idMarca,
-                    m.nombreMarca,
+                    id = m.idMarca,
+                    nombre = m.nombreMarca,
                     m.descripcionMarca
                 })
                 .ToListAsync();
@@ -123,7 +123,7 @@ namespace GestorInventario.src.Controllers
                 };
                 await _context.Marcas.AddAsync(nuevaMarca);
                 await _context.SaveChangesAsync();
-                return Ok("Marca creada correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

@@ -127,6 +127,12 @@ namespace GestorInventario.src.Models
                     return StatusCode(StatusCodes.Status404NotFound, "Empleado no encontrado");
                 }
 
+                var tipoDeEquipoExistente = await _context.TiposDeEquipos.FirstOrDefaultAsync(te => te.idTipoDeEquipo == propietarioEquipoDTO.idTipoDeEquipo && te.estado == 1);
+                if (tipoDeEquipoExistente == null)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "Tipo de equipo no encontrado");
+                }
+
                 var equipoExistente = await _context.Equipos.FirstOrDefaultAsync(eq => eq.idEquipo == propietarioEquipoDTO.idEquipo && eq.estado == 1);
                 if (equipoExistente == null)
                 {
@@ -142,13 +148,14 @@ namespace GestorInventario.src.Models
                 var propietarioEquipo = new PropietarioEquipo
                 {
                     idEmpleado = propietarioEquipoDTO.idEmpleado,
+                    idTipoDeEquipo = propietarioEquipoDTO.idTipoDeEquipo,
                     idEquipo = propietarioEquipoDTO.idEquipo,
                     fechaDeEntrega = propietarioEquipoDTO.fechaDeEntrega,
                     estado = 1
                 };
                 await _context.PropietarioEquipos.AddAsync(propietarioEquipo);
                 await _context.SaveChangesAsync();
-                return Ok("Propietario de equipo creado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

@@ -125,7 +125,7 @@ namespace GestorInventario.src.Controllers
                 
                 await _context.ReporteEquipos.AddAsync(reporteEquipo);
                 await _context.SaveChangesAsync();
-                return Ok("Reporte de equipo creado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

@@ -80,8 +80,8 @@ namespace GestorInventario.src.Controllers
                 .Where(te => te.estado == 1 && te.nombreTipoDeEquipo.Contains(nombre))
                 .Include(te => te.Marca)
                 .Select(te => new {
-                    te.idTipoDeEquipo,
-                    te.nombreTipoDeEquipo,
+                    id = te.idTipoDeEquipo,
+                    nombre = te.nombreTipoDeEquipo,
                     te.descripcionTipoDeEquipo,
                     nombreMarca = te.Marca.nombreMarca})
                 .ToListAsync();
@@ -119,7 +119,7 @@ namespace GestorInventario.src.Controllers
                 };
                 await _context.TiposDeEquipos.AddAsync(tipoDeEquipo);
                 await _context.SaveChangesAsync();
-                return Ok("Tipo de equipo creado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

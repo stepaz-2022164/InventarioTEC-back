@@ -27,8 +27,8 @@ namespace GestorInventario.src.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(h => new {
-                    h.idHUB,
-                    h.nombreHUB,
+                    id = h.idHUB,
+                    nombre = h.nombreHUB,
                     nombrePais = h.Pais.nombrePais,
                     nombreRegion = h.Region.nombreRegion
                 })
@@ -77,8 +77,8 @@ namespace GestorInventario.src.Controllers
                 .Include(h => h.Pais)
                 .Include(h => h.Region)
                 .Select(h => new {
-                    h.idHUB,
-                    h.nombreHUB,
+                    id = h.idHUB,
+                    nombre = h.nombreHUB,
                     nombrePais = h.Pais.nombrePais,
                     nombreRegion = h.Region.nombreRegion
                 })

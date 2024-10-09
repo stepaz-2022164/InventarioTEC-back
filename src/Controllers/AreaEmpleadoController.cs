@@ -78,8 +78,8 @@ namespace GestorInventario.src.Controllers
                 .Contains(name))
                 .Include(ae => ae.DepartamentoEmpleado)
                 .Select(ae => new {
-                    ae.idAreaEmpleado,
-                    ae.nombreAreaEmpleado,
+                    id = ae.idAreaEmpleado,
+                    nombre = ae.nombreAreaEmpleado,
                     ae.descripcionAreaEmpleado,
                     nombreDepartamentoEmpleado = ae.DepartamentoEmpleado.nombreDepartamentoEmpleado
                 })

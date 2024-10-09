@@ -155,7 +155,7 @@ namespace GestorInventario.src.Controllers
 
                 await _context.Sedes.AddAsync(sede);
                 await _context.SaveChangesAsync();
-                return Ok("Sede creada correctamente");
+                return Ok();
 
             }
             catch (Exception e)

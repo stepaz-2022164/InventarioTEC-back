@@ -30,8 +30,8 @@ namespace GestorInventario.src.Controllers
                 .Skip((pagina - 1) * numeroPaginas)
                 .Take(numeroPaginas)
                 .Select(eq => new{
-                    eq.idEquipo,
-                    eq.numeroDeSerie,
+                    id = eq.idEquipo,
+                    nombre = eq.numeroDeSerie,
                     eq.estadoEquipo,
                     eq.fechaDeIngreso,
                     nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo
@@ -83,8 +83,8 @@ namespace GestorInventario.src.Controllers
                 .Where(eq => eq.estado == 1 && eq.numeroDeSerie.Contains(serialNumber))
                 .Include(eq => eq.TipoDeEquipo)
                 .Select(eq => new{
-                    eq.idEquipo,
-                    eq.numeroDeSerie,
+                    id = eq.idEquipo,
+                    nombre = eq.numeroDeSerie,
                     eq.estadoEquipo,
                     eq.fechaDeIngreso,
                     nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo,
