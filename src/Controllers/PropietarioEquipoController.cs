@@ -37,7 +37,7 @@ namespace GestorInventario.src.Models
                     nombreEmpleado = pe.Empleado.nombreEmpleado,
                     nombreTipoDeEquipo = pe.TipoDeEquipo.nombreTipoDeEquipo,
                     numeroDeSerie = pe.Equipo.numeroDeSerie,
-                    pe.fechaDeEntrega
+                    fechaDeEntrega = pe.fechaDeEntrega.ToString("dd/MM/yyyy")
                 })
                 .ToListAsync();
 
@@ -92,7 +92,7 @@ namespace GestorInventario.src.Models
                     nombreEmpleado = pe.Empleado.nombreEmpleado,
                     nombreTipoDeEquipo = pe.TipoDeEquipo.nombreTipoDeEquipo,
                     numeroDeSerie = pe.Equipo.numeroDeSerie,
-                    pe.fechaDeEntrega
+                    fechaDeEntrega = pe.fechaDeEntrega.ToString("dd/MM/yyyy")
                 })
                 .ToListAsync();
                 

@@ -31,7 +31,7 @@ namespace GestorInventario.src.Controllers
                 .Take(numeroPaginas)
                 .Select(r => new {
                     r.idReporteEquipo,
-                    r.fechaReporte,
+                    fechaReporte = r.fechaReporte.ToString("dd/MM/yyyy"),
                     r.descripcionReporteEquipo,
                     numeroDeSerie = r.Equipo.numeroDeSerie,
                 })
@@ -81,7 +81,7 @@ namespace GestorInventario.src.Controllers
                 .Where(r => r.estado == 1 && r.Equipo.numeroDeSerie.Contains(serialNumber))
                 .Select(r => new {
                     r.idReporteEquipo,
-                    r.fechaReporte,
+                    fechaReporte = r.fechaReporte.ToString("dd/MM/yyyy"),
                     r.descripcionReporteEquipo,
                     numeroDeSerie = r.Equipo.numeroDeSerie})
                 .ToListAsync();

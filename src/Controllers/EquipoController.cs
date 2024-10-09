@@ -33,7 +33,7 @@ namespace GestorInventario.src.Controllers
                     id = eq.idEquipo,
                     nombre = eq.numeroDeSerie,
                     eq.estadoEquipo,
-                    eq.fechaDeIngreso,
+                    fechaDeIngreso = eq.fechaDeIngreso.ToString("dd/MM/yyyy"),
                     nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo
                 })
                 .ToListAsync();
@@ -86,7 +86,7 @@ namespace GestorInventario.src.Controllers
                     id = eq.idEquipo,
                     nombre = eq.numeroDeSerie,
                     eq.estadoEquipo,
-                    eq.fechaDeIngreso,
+                    fechaDeIngreso = eq.fechaDeIngreso.ToString("dd/MM/yyyy"),
                     nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo,
                     eq.estado
                 })
