@@ -48,6 +48,8 @@ namespace GestorInventario.src.Controllers
             }
         }
 
+        
+
         [ValidateJWT]
         [HttpGet]
         [Route("getDepartamentoEmpleadoById")]

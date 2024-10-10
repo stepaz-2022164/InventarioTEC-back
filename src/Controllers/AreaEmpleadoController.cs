@@ -49,6 +49,37 @@ namespace GestorInventario.src.Controllers
 
         [ValidateJWT]
         [HttpGet]
+        [Route("getAreasEmpleadosAll")]
+        public async Task<ActionResult<IEnumerable<AreaEmpleado>>> GetAreasEmpleadosAll(){
+            try
+            {
+                var areaEmpleados = await _context.AreasEmpleados
+                .Where(ae => ae.estado == 1)
+                .Include(ae => ae.DepartamentoEmpleado)
+                .Select(ae => new {
+                    id = ae.idAreaEmpleado,
+                    nombre = ae.nombreAreaEmpleado,
+                    ae.descripcionAreaEmpleado,
+                    nombreDepartamentoEmpleado = ae.DepartamentoEmpleado.nombreDepartamentoEmpleado
+                })
+                .ToListAsync();
+
+                if (areaEmpleados.Count() == 0)
+                {
+                    return NotFound("No se encontraron registros");
+                }
+
+                return Ok(new {data = areaEmpleados});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
         [Route("getAreaEmpleadoById")]
         public async Task<ActionResult<AreaEmpleado>> GetAreaEmpleadoById(int id){
             try

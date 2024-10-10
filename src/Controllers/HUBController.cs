@@ -95,5 +95,36 @@ namespace GestorInventario.src.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
             }
         }
+
+        [ValidateJWT]
+        [HttpGet]
+        [Route("getHUBSAll")]
+        public async Task<ActionResult<IEnumerable<HUB>>> GetHUBSAll(){
+            try
+            {
+                var hubs = await _context.HUB
+                .Include(h => h.Pais)
+                .Include(h => h.Region)
+                .Select(h => new {
+                    id = h.idHUB,
+                    nombre = h.nombreHUB,
+                    nombrePais = h.Pais.nombrePais,
+                    nombreRegion = h.Region.nombreRegion
+                })
+                .ToListAsync();
+
+                if (hubs.Count() == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+
+                return Ok(new {data = hubs});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
     }
 }
