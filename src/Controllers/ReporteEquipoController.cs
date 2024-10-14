@@ -156,7 +156,7 @@ namespace GestorInventario.src.Controllers
                     reporteEquipoExistente.descripcionReporteEquipo = reporteEquipoUpdateDTO.descripcionReporteEquipo;
                 }
                 await _context.SaveChangesAsync();
-                return Ok("Reporte de equipo actualizado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

@@ -110,6 +110,42 @@ namespace GestorInventario.src.Controllers
         }
 
         [ValidateJWT]
+        [HttpGet]
+        [Route("getSedesAll")]
+        public async Task<ActionResult<IEnumerable<Sede>>> GetSedesAll()
+        {
+            try
+            {
+                var sedes = await _context.Sedes
+                .Where(s => s.estado == 1 )
+                .Include(s => s.Pais)
+                .Include(s => s.Region)
+                .Include(s => s.HUB)
+                .Select(s => new {
+                    id = s.idSede,
+                    nombre = s.nombreSede,
+                    s.direccionSede,
+                    nombrePais = s.Pais.nombrePais,
+                    nombreRegion = s.Region.nombreRegion,
+                    nombreHUB = s.HUB.nombreHUB
+                })
+                .ToListAsync();
+
+                if (sedes.Count() == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+
+                return Ok(new{data = sedes});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
         [HttpPost]
         [Route("createSede")]
         public async Task<ActionResult<Sede>> CreateSede([FromBody] SedeDTO sedeDTO)
@@ -178,9 +214,9 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
 
-                if (!string.IsNullOrEmpty(sedeDTO.nombreSede))
+                if (!string.IsNullOrEmpty(sedeDTO.nombre))
                 {
-                    sedeExistente!.nombreSede = sedeDTO.nombreSede;
+                    sedeExistente!.nombreSede = sedeDTO.nombre;
                 }
 
                 if (!string.IsNullOrEmpty(sedeDTO.direccionSede))

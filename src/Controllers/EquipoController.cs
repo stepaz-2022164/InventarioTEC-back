@@ -53,6 +53,37 @@ namespace GestorInventario.src.Controllers
 
         [ValidateJWT]
         [HttpGet]
+        [Route("getEquiposAll")]
+        public async Task<ActionResult<IEnumerable<Equipo>>> GetEquiposAll(){
+            try
+            {
+                var equipos = await _context.Equipos
+                .Where(eq => eq.estado == 1)
+                .Include(eq => eq.TipoDeEquipo)
+                .Select(eq => new{
+                    id = eq.idEquipo,
+                    nombre = eq.numeroDeSerie,
+                    eq.estadoEquipo,
+                    fechaDeIngreso = eq.fechaDeIngreso.ToString("dd/MM/yyyy"),
+                    nombreTipoDeEquipo = eq.TipoDeEquipo.nombreTipoDeEquipo
+                })
+                .ToListAsync();
+
+                if (equipos.Count() == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+                return Ok(new {data = equipos});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
         [Route("getEquipoById")]
         public async Task<ActionResult<Equipo>> GetEquipoById(int id)
         {

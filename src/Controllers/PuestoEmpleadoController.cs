@@ -52,6 +52,38 @@ namespace GestorInventario.src.Controllers
             }
         }
 
+        [ValidateJWT]
+        [HttpGet]
+        [Route("getPuestosEmpleadosAll")]
+        public async Task<ActionResult<IEnumerable<PuestoEmpleado>>> GetPuestosEmpleadosAll()
+        {
+            try
+            {
+                var puestosEmpleados = await _context.PuestosEmpleados
+                .Where(pe => pe.estado == 1)
+                .Include(pe => pe.AreaEmpleado)
+                .Select(pe => new
+                    {
+                        id = pe.idPuestoEmpleado,
+                        nombre = pe.nombrePuestoEmpleado,
+                        pe.descripcionPuestoEmpleado,
+                        nombreAreaEmpleado = pe.AreaEmpleado.nombreAreaEmpleado
+                    })
+                .ToListAsync();
+
+                if (puestosEmpleados.Count == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+
+                return Ok(new{data = puestosEmpleados});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
 
         [ValidateJWT]
         [HttpGet]
@@ -172,7 +204,7 @@ namespace GestorInventario.src.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return Ok("Puesto de empleado actualizado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

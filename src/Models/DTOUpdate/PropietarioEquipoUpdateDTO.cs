@@ -4,6 +4,7 @@ namespace GestorInventario.src.Models.DTOUpdate
     {
         public int? idEmpleado {get; set;}
         public int? idEquipo {get; set;}
+        public int? idTipoDeEquipo {get; set;}
         public DateOnly? fechaDeEntrega {get; set;}
     }
 }

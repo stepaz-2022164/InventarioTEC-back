@@ -59,6 +59,44 @@ namespace GestorInventario.src.Controllers
 
         [ValidateJWT]
         [HttpGet]
+        [Route("getEmpleadosAll")]
+        public async Task<ActionResult<IEnumerable<Empleado>>> GetEmpleadosAll(){
+            try
+            {
+                var empleados = await _context.Empleados
+                .Where(e => e.estado == 1)
+                .Include(e => e.DepartamentoEmpleado)
+                .Include(e => e.AreaEmpleado)
+                .Include(e => e.PuestoEmpleado)
+                .Include(e => e.Sede)
+                .Select(e => new{
+                    id = e.idEmpleado,
+                    nombre = e.nombreEmpleado,
+                    e.numeroDeFicha,
+                    e.telefonoEmpleado,
+                    e.correoEmpleado,
+                    nombreDepartamentoEmpleado = e.DepartamentoEmpleado.nombreDepartamentoEmpleado,
+                    nombreAreaEmpleado = e.AreaEmpleado.nombreAreaEmpleado,
+                    nombrePuestoEmpleado = e.PuestoEmpleado.nombrePuestoEmpleado,
+                    nombreSede = e.Sede.nombreSede
+                })
+                .ToListAsync();
+
+                if (empleados.Count() == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+                return Ok(new {data = empleados});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
         [Route("getEmpleadoById")]
         public async Task<ActionResult<Empleado>> GetEmpleadoById(int id){
             try
@@ -121,39 +159,34 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<Empleado>> CreateEmpleado([FromBody] EmpleadoDTO empleadoDTO){
             try
             {
-                if (!ModelState.IsValid!)
-                {
-                    return BadRequest(ModelState);
-                }
-
                 var empleadoExistente = await _context.Empleados.FirstOrDefaultAsync(e => e.estado == 1 && e.numeroDeFicha == empleadoDTO.numeroDeFicha);
                 if (empleadoExistente != null)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Empleado ya existente");
+                    return StatusCode(StatusCodes.Status404NotFound, "Empleado ya existente");
                 }
 
                 var departamentoEmpleado = await _context.DepartamentosEmpleados.FindAsync(empleadoDTO.idDepartamentoEmpleado);
                 if (departamentoEmpleado == null)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Departamento no encontrado");
+                    return StatusCode(StatusCodes.Status404NotFound, "Departamento no encontrado");
                 }
 
                 var areaEmpleado = await _context.AreasEmpleados.FindAsync(empleadoDTO.idAreaEmpleado);
                 if (areaEmpleado == null)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Área no encontrada");
+                    return StatusCode(StatusCodes.Status404NotFound, "Área no encontrada");
                 }
 
                 var puestoEmpleado = await _context.PuestosEmpleados.FindAsync(empleadoDTO.idPuestoEmpleado);
                 if (puestoEmpleado == null)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Puesto no encontrado");
+                    return StatusCode(StatusCodes.Status404NotFound, "Puesto no encontrado");
                 }
 
                 var sede = await _context.Sedes.FindAsync(empleadoDTO.idSede);
                 if (sede == null)
                 {
-                    return StatusCode(StatusCodes.Status400BadRequest, "Sede no encontrada");
+                    return StatusCode(StatusCodes.Status404NotFound, "Sede no encontrada");
                 }
 
                 var empleado = new Empleado

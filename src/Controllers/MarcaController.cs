@@ -50,6 +50,36 @@ namespace GestorInventario.src.Controllers
 
         [ValidateJWT]
         [HttpGet]
+        [Route("getMarcasAll")]
+        public async Task<ActionResult<IEnumerable<Marca>>> GetMarcasAll()
+        {
+            try
+            {
+                var marcas = await _context.Marcas
+                .Where(m => m.estado == 1)
+                .Select(m => new{
+                    id = m.idMarca,
+                    nombre = m.nombreMarca,
+                    m.descripcionMarca
+                })
+                .ToListAsync();
+
+                if (marcas.Count() == 0)
+                {
+                    return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                }
+
+                return Ok(new {data = marcas});
+            }
+            catch (System.Exception e)
+            {
+                Console.Error.WriteLine(e);
+                return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+            }
+        }
+
+        [ValidateJWT]
+        [HttpGet]
         [Route("getMarcaById")]
         public async Task<ActionResult<Marca>> GetMarcaById(int id)
         {
