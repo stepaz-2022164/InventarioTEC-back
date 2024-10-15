@@ -193,9 +193,9 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
 
-                if (!string.IsNullOrEmpty(puesEmpleadoUpdateDTO.nombrePuestoEmpleado))
+                if (!string.IsNullOrEmpty(puesEmpleadoUpdateDTO.nombre))
                 {
-                    puestoEmpledoExistente!.nombrePuestoEmpleado = puesEmpleadoUpdateDTO.nombrePuestoEmpleado;
+                    puestoEmpledoExistente!.nombrePuestoEmpleado = puesEmpleadoUpdateDTO.nombre;
                 }
 
                 if (!string.IsNullOrEmpty(puesEmpleadoUpdateDTO.descripcionPuestoEmpleado))
@@ -226,8 +226,8 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
                 
-                var empleados = await _context.Empleados.Where(e => e.idPuestoEmpleado == id && e.estado == 1).ToListAsync();
-                if (empleados != null)
+                var empleados = await _context.Empleados.Where(e => e.idPuestoEmpleado == puestoEmpleadoExistente.idPuestoEmpleado && e.estado == 1).ToListAsync();
+                if (empleados.Count() != 0)
                 {
                     return StatusCode(StatusCodes.Status409Conflict, "No se puede eliminar el puesto porque hay registros dependientes.");
                 }

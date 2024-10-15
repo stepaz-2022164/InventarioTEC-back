@@ -225,9 +225,9 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Empleado no encontrado");
                 }
 
-                if (!string.IsNullOrEmpty(empleadoDTOUpdate.nombreEmpleado))
+                if (!string.IsNullOrEmpty(empleadoDTOUpdate.nombre))
                 {
-                    empleadoExistente!.nombreEmpleado = empleadoDTOUpdate.nombreEmpleado;
+                    empleadoExistente!.nombreEmpleado = empleadoDTOUpdate.nombre;
                 }
 
                 if (!string.IsNullOrEmpty(empleadoDTOUpdate.telefonoEmpleado))

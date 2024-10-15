@@ -175,16 +175,16 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
 
-                if (!string.IsNullOrEmpty(marca.nombreMarca))
+                if (!string.IsNullOrEmpty(marca.nombre))
                 {
-                    marcaExistente!.nombreMarca = marca.nombreMarca;
+                    marcaExistente!.nombreMarca = marca.nombre;
                 }
                 if (!string.IsNullOrEmpty(marca.descripcionMarca))
                 {
                     marcaExistente!.descripcionMarca = marca.descripcionMarca;
                 }
                 await _context.SaveChangesAsync();
-                return Ok("Marca actualizada correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {

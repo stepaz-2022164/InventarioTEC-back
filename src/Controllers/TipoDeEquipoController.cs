@@ -171,9 +171,9 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
                 
-                if (!string.IsNullOrEmpty(tipoDeEquipoUpdateDTO.nombreTipoDeEquipo))
+                if (!string.IsNullOrEmpty(tipoDeEquipoUpdateDTO.nombre))
                 {
-                    tipoDeEquipoExistente.nombreTipoDeEquipo = tipoDeEquipoUpdateDTO.nombreTipoDeEquipo;
+                    tipoDeEquipoExistente.nombreTipoDeEquipo = tipoDeEquipoUpdateDTO.nombre;
                 }
 
                 if (!string.IsNullOrEmpty(tipoDeEquipoUpdateDTO.descripcionTipoDeEquipo))
@@ -182,7 +182,7 @@ namespace GestorInventario.src.Controllers
                 }
 
                 await _context.SaveChangesAsync();
-                return Ok("Tipo de equipo actualizado correctamente");
+                return Ok();
             }
             catch (System.Exception e)
             {
