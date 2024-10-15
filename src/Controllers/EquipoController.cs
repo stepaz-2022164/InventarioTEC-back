@@ -187,9 +187,9 @@ namespace GestorInventario.src.Controllers
                     return StatusCode(StatusCodes.Status404NotFound, "Registro no encontrado");
                 }
 
-                if (!string.IsNullOrEmpty(equipoUpdateDTO.numeroDeSerie))
+                if (!string.IsNullOrEmpty(equipoUpdateDTO.nombre))
                 {
-                    equipoExistente.numeroDeSerie = equipoUpdateDTO.numeroDeSerie;
+                    equipoExistente.numeroDeSerie = equipoUpdateDTO.nombre;
                 }
 
                 if (!string.IsNullOrEmpty(equipoUpdateDTO.estadoEquipo))
