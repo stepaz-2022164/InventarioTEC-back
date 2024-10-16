@@ -276,3 +276,5 @@ C:\Escritorio\Inventario_TEC\InventarioTEC-back\obj\Debug\net8.0\GestorInventari
 C:\Escritorio\Inventario_TEC\InventarioTEC-back\obj\Debug\net8.0\ref\GestorInventario.dll
 C:\Users\Soporte_IT\Desktop\Inventario - TEC\InventarioTEC-back\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\Escritorio\Inventario_TEC\InventarioTEC-back\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+C:\Users\Soporte_IT\Desktop\Inventario - TEC\InventarioTEC-back\bin\Debug\net8.0\BouncyCastle.Cryptography.dll
+C:\Users\Soporte_IT\Desktop\Inventario - TEC\InventarioTEC-back\bin\Debug\net8.0\itextsharp.dll

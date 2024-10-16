@@ -1,4 +1,0 @@
-namespace GestorInventario.src.Utils
-{
-    
-}

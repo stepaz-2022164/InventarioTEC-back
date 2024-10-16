@@ -68,7 +68,9 @@ namespace GestorInventario.src.Models.Contexts
             modelBuilder.Entity<Equipo>().HasOne(equi => equi.TipoDeEquipo).WithMany().HasForeignKey(equi => equi.idTipoDeEquipo).OnDelete(DeleteBehavior.Restrict);
             //Propietario Equipo
             modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.Empleado).WithMany().HasForeignKey(pe => pe.idEmpleado).OnDelete(DeleteBehavior.Restrict);
-            modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.Empleado).WithMany().HasForeignKey(pe => pe.idEmpleado).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.TipoDeEquipo).WithMany().HasForeignKey(pe => pe.idTipoDeEquipo).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.Equipo).WithMany().HasForeignKey(pe => pe.idEquipo).OnDelete(DeleteBehavior.Restrict);
+            modelBuilder.Entity<PropietarioEquipo>().HasOne(pe => pe.HUB).WithMany().HasForeignKey(pe => pe.idHUB).OnDelete(DeleteBehavior.Restrict);
             //Reporte Equipo
             modelBuilder.Entity<ReporteEquipo>();
         }

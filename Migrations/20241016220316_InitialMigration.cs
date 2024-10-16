@@ -316,6 +316,7 @@ namespace GestorInventario.Migrations
                     idEmpleado = table.Column<int>(type: "int", nullable: false),
                     idTipoDeEquipo = table.Column<int>(type: "int", nullable: false),
                     idEquipo = table.Column<int>(type: "int", nullable: false),
+                    idHUB = table.Column<int>(type: "int", nullable: false),
                     fechaDeEntrega = table.Column<DateOnly>(type: "date", nullable: false),
                     estado = table.Column<int>(type: "int", nullable: false)
                 },
@@ -333,13 +334,19 @@ namespace GestorInventario.Migrations
                         column: x => x.idEquipo,
                         principalTable: "Equipos",
                         principalColumn: "idEquipo",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PropietarioEquipos_HUB_idHUB",
+                        column: x => x.idHUB,
+                        principalTable: "HUB",
+                        principalColumn: "idHUB",
+                        onDelete: ReferentialAction.Restrict);
                     table.ForeignKey(
                         name: "FK_PropietarioEquipos_TiposDeEquipos_idTipoDeEquipo",
                         column: x => x.idTipoDeEquipo,
                         principalTable: "TiposDeEquipos",
                         principalColumn: "idTipoDeEquipo",
-                        onDelete: ReferentialAction.Cascade);
+                        onDelete: ReferentialAction.Restrict);
                 });
 
             migrationBuilder.CreateIndex(
@@ -391,6 +398,11 @@ namespace GestorInventario.Migrations
                 name: "IX_PropietarioEquipos_idEquipo",
                 table: "PropietarioEquipos",
                 column: "idEquipo");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PropietarioEquipos_idHUB",
+                table: "PropietarioEquipos",
+                column: "idHUB");
 
             migrationBuilder.CreateIndex(
                 name: "IX_PropietarioEquipos_idTipoDeEquipo",

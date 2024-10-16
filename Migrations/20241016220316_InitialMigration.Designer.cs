@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20241010150010_InitialMigration")]
+    [Migration("20241016220316_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -297,6 +297,10 @@ namespace GestorInventario.Migrations
                         .HasColumnType("int")
                         .HasColumnName("idEquipo");
 
+                    b.Property<int>("idHUB")
+                        .HasColumnType("int")
+                        .HasColumnName("idHUB");
+
                     b.Property<int>("idTipoDeEquipo")
                         .HasColumnType("int")
                         .HasColumnName("idTipoDeEquipo");
@@ -306,6 +310,8 @@ namespace GestorInventario.Migrations
                     b.HasIndex("idEmpleado");
 
                     b.HasIndex("idEquipo");
+
+                    b.HasIndex("idHUB");
 
                     b.HasIndex("idTipoDeEquipo");
 
@@ -609,18 +615,26 @@ namespace GestorInventario.Migrations
                     b.HasOne("Equipo", "Equipo")
                         .WithMany()
                         .HasForeignKey("idEquipo")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("HUB", "HUB")
+                        .WithMany()
+                        .HasForeignKey("idHUB")
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.HasOne("TipoDeEquipo", "TipoDeEquipo")
                         .WithMany()
                         .HasForeignKey("idTipoDeEquipo")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Empleado");
 
                     b.Navigation("Equipo");
+
+                    b.Navigation("HUB");
 
                     b.Navigation("TipoDeEquipo");
                 });

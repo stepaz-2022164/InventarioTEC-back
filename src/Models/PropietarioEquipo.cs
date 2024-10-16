@@ -21,6 +21,10 @@ public class PropietarioEquipo
     public int idEquipo { get; set; }
 
     [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
+    [Column("idHUB", TypeName = "int")]
+    public int idHUB { get; set; }
+
+    [Required(ErrorMessage = "El parámetro {0} es obligatorio")]
     [DataType(DataType.Date)]
     [Column("fechaDeEntrega", TypeName = "date")]
     public System.DateOnly fechaDeEntrega { get; set; }
@@ -33,6 +37,9 @@ public class PropietarioEquipo
 
     [ForeignKey("idTipoDeEquipo")]
     public TipoDeEquipo TipoDeEquipo { get; set;} = null!;
+
+    [ForeignKey("idHUB")]
+    public HUB HUB { get; set;} = null!;
 
     [ForeignKey("idEquipo")]
     public Equipo Equipo { get; set;} = null!;
