@@ -114,6 +114,42 @@
             }
 
             [ValidateJWT]
+            [HttpGet]
+            [Route("getPropietarioEquipoByHUB")]
+            public async Task<ActionResult<IEnumerable<PropietarioEquipo>>> GetPropietarioEquipoByHub(string hub)
+            {
+                try
+                {
+                    var propietariosEquipos = await _context.PropietarioEquipos
+                    .Include(pe => pe.Empleado)
+                    .Include(pe => pe.TipoDeEquipo)
+                    .Include(pe => pe.Equipo)
+                    .Include(pe => pe.HUB)
+                    .Where(pe => pe.estado == 1 && pe.HUB.nombreHUB == hub)
+                    .Select(pe => new {
+                        pe.idPropietarioEquipo,
+                        nombreEmpleado = pe.Empleado.nombreEmpleado,
+                        nombreTipoDeEquipo = pe.TipoDeEquipo.nombreTipoDeEquipo,
+                        numeroDeSerie = pe.Equipo.numeroDeSerie,
+                        nombreHUB = pe.HUB.nombreHUB,
+                        fechaDeEntrega = pe.fechaDeEntrega.ToString("dd/MM/yyyy")
+                    })
+                    .ToListAsync();
+
+                    if (propietariosEquipos.Count() == 0)
+                    {
+                        return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");
+                    }
+                    return Ok(propietariosEquipos);
+                }
+                catch (System.Exception e)
+                {
+                    Console.Error.WriteLine(e);
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Error al obtener los registros");
+                }
+            }
+
+            [ValidateJWT]
             [HttpPost]
             [Route("createPropietarioEquipo")]
             public async Task<ActionResult<PropietarioEquipo>> CreatePropietarioEquipo([FromBody] PropietarioEquipoDTO propietarioEquipoDTO)
