@@ -77,7 +77,13 @@ namespace GestorInventario.src.Controllers
         public async Task<ActionResult<DepartamentoEmpleado>> GetDepartamentoEmpleadoByName(string name){
             try
             {
-                var departamentoEmpleado = await _context.DepartamentosEmpleados.Where(de => de.nombreDepartamentoEmpleado.Contains(name)).ToListAsync();
+                var departamentoEmpleado = await _context.DepartamentosEmpleados.Where(de => de.nombreDepartamentoEmpleado.Contains(name))
+                .Select(se => new {
+                    id = se.idDepartamentoEmpleado,
+                    nombre = se.nombreDepartamentoEmpleado,
+                    se.descripcionAreaEmpleado
+                })
+                .ToListAsync();
                 if (departamentoEmpleado == null)
                 {
                     return StatusCode(StatusCodes.Status404NotFound, "No se encontraron registros");

@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace GestorInventario.Migrations
 {
     [DbContext(typeof(InventarioContext))]
-    [Migration("20241016220316_InitialMigration")]
+    [Migration("20241018030032_InitialMigration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
